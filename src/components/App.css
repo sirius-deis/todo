@@ -1,10 +1,16 @@
 .App {
   text-align: center;
   height: 70vh;
-  width: 50vw;
+  width: 40vw;
   margin: 20vh auto;
-  padding: 4rem 15rem;
-  background-image: linear-gradient(to left, #d4d4d4d7, #e7e5d3);
+  padding: 4rem 7rem;
+  background: #EFF1F2;
   box-shadow: 5px 8px 5px #35353579;
+  border-radius: 7px;
 }
 
+.line {
+  margin-top: 2rem;
+  border-top: 1px solid #75757563;
+  width: 100%;
+}
