@@ -5,8 +5,8 @@ const AddForm = () => {
         <form className='addForm'>
             <input type="text" placeholder='Add new...'/>
             <label htmlFor='date'>
-                <input type="date"/>
-                <i class="fa-solid fa-calendar-days"></i>
+                <input type="date" id='date' className='date'/>
+                <i className="fa-solid fa-calendar-days"></i>
             </label>
             <button type='submit' className='btn'>add</button>
         </form>
