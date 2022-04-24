@@ -1,0 +1,20 @@
+.header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: linear-gradient(#1266f1, #1268f170);
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.header__logo {
+    font-size: 4rem;
+}
+
+.header__heading {
+    font-size: 3rem;
+    margin-left: 2rem;
+    text-decoration: underline;
+    text-underline-position: below;
+    text-decoration-color: #1266f1;
+}
