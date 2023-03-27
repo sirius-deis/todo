@@ -11,36 +11,44 @@
     <main class="container">
       <div class="header">
         <span class="header__logo"></span>
-        <h1 class="header__title"></h1>
+        <h1 class="header__title">My Todo-s</h1>
       </div>
       <div class="calendar">
-        <button type="calendar__button">today</button>
+        <button class="calendar__button">today</button>
+        <div class="calendar__picker"></div>
       </div>
       <form class="add">
-        <input class="add__input" type="text" placeholder="Add new" required />
-        <label class="add__lable"
-          ><input class="add__time" type="time"
-        /></label>
-        <button class="add__btn" type="submit">Add</button>
+        <div class="add__wrapper">
+          <input
+            class="add__input"
+            type="text"
+            placeholder="Add new"
+            required
+          />
+          <label class="add__label"
+            ><input class="add__time" type="time"
+          /></label>
+          <button class="add__btn" type="submit">Add</button>
+        </div>
       </form>
       <div class="line"></div>
       <div class="display">
         <div class="display__filter">
-          <label class="dissplay__label" for="display__select">Filter</label>
-          <select name="filter" id="display__select">
+          <label class="display__label" for="select-filter">Filter</label>
+          <select name="filter" class="display__select" id="select-filter">
             <option value="all">All</option>
             <option value="completed">Completed</option>
             <option value="active">Active</option>
           </select>
         </div>
         <div class="display__sort">
-          <label class="dissplay__label" for="display__select">Sort</label>
-          <select name="sort" id="display__select">
+          <label class="display__label" for="select-sort">Sort</label>
+          <select name="sort" class="display__select" id="select-sort">
             <option value="name">Name</option>
             <option value="'time">Time</option>
           </select>
         </div>
-        <button class="display__desc">
+        <button class="display__asc">
           <img
             src="public/icons/arrow-down-short-wide-solid.svg"
             height="20"
@@ -52,34 +60,41 @@
       <div class="todos">
         <ul class="todos__list">
           <li class="todos__item">
-            <label
-              ><input type="checkbox" name="" class="todos__check"
-            /></label>
+            <label class="todos__label"
+              ><input
+                type="checkbox"
+                name="todos__check"
+                class="todos__check"
+                checked />
+              <span class="todos__checkmark"></span
+            ></label>
             <div class="todos__text">Lorem ipsum dolor sit!</div>
             <div class="todos__expiration">
-              <img
-                class="todos__hourglass"
-                src="public/icons/hourglass-half-regular.svg"
-                height="10"
-                width="10"
-                alt="hourglass"
-              />
-              <span class="todos__time"></span>
+              <div class="todos__wrapper">
+                <img
+                  class="todos__hourglass"
+                  src="public/icons/hourglass-half-regular.svg"
+                  height="20"
+                  width="20"
+                  alt="hourglass"
+                />
+                <span class="todos__time">24342</span>
+              </div>
             </div>
             <div class="todos__edit">
               <div class="todos__top">
                 <img
                   class="todos__pencil"
                   src="public/icons/pencil-solid.svg"
-                  height="10"
-                  width="10"
+                  height="16"
+                  width="16"
                   alt="pencil"
                 />
                 <img
                   class="todos__trash"
                   src="public/icons/trash-solid.svg"
-                  height="10"
-                  width="10"
+                  height="16"
+                  width="16"
                   alt="trash"
                 />
               </div>
@@ -87,11 +102,11 @@
                 <img
                   class="todos__sign"
                   src="public/icons/info-solid.svg"
-                  height="10"
-                  width="10"
+                  height="14"
+                  width="14"
                   alt="info"
                 />
-                <span class="time"></span>
+                <span class="todos__time">52353</span>
               </div>
             </div>
           </li>
