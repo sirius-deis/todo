@@ -1,3 +1,5 @@
+import { defineMonthAndYear, formDateList } from "./utils";
+
 const calendarBtnEl = document.querySelector(".calendar__button");
 const pickerEl = document.querySelector(".picker");
 const pickerYearEl = pickerEl.querySelector(".picker__year .picker__value");
@@ -6,8 +8,14 @@ const pickerDateContainer = pickerEl.querySelector(".picker__dates");
 const pickerDateEls = pickerDateContainer.querySelectorAll(
   ".picker__date .picker__date-container"
 );
+const pickerYearArrow = pickerEl.querySelectorAll(
+  ".picker__year .picker__arrow"
+);
+const pickerMonthArrow = pickerEl.querySelectorAll(
+  ".picker__month .picker__arrow"
+);
 const today = new Date();
-let chosenDay;
+let chosenDay = today;
 /* prettier-ignore */
 const months = ["January", "February","March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
@@ -35,6 +43,7 @@ function resetDateEls() {
 }
 
 function formDates(date) {
+  resetDateEls();
   const dateCloneForPrev = new Date(date.getFullYear(), date.getMonth(), 1);
   const dateCloneForCurr = new Date(date.getFullYear(), date.getMonth() + 1, 1);
   const firstDayOfMonth = dateCloneForPrev.getDay();
@@ -44,23 +53,26 @@ function formDates(date) {
   const lastDayOfPrevMonth = new Date(
     dateCloneForPrev.setDate(dateCloneForPrev.getDate() - 1)
   ).getDate();
-  for (let i = 0; i < firstDayOfMonth; i++) {
-    pickerDateEls[i].textContent = lastDayOfPrevMonth - firstDayOfMonth + i + 1;
-    pickerDateEls[i].classList.add("picker__date--prev");
-  }
-  for (let i = firstDayOfMonth; i < amountOfDays + firstDayOfMonth; i++) {
-    pickerDateEls[i].textContent = i - firstDayOfMonth + 1;
-  }
-  for (let i = amountOfDays + firstDayOfMonth; i < 42; i++) {
-    pickerDateEls[i].textContent = i - amountOfDays - firstDayOfMonth + 1;
-    pickerDateEls[i].classList.add("picker__date--next");
+
+  const listOfDates = formDateList(
+    firstDayOfMonth,
+    amountOfDays,
+    lastDayOfPrevMonth
+  );
+  for (let i = 0; i < pickerDateEls.length; i++) {
+    pickerDateEls[i].textContent = listOfDates[i].data;
+    if (listOfDates[i].info) {
+      pickerDateEls[i]
+        .closest(".picker__date")
+        .classList.add(`picker__date--${listOfDates[i].info}`);
+    }
   }
 }
 
 calendarBtnEl.addEventListener("click", (e) => {
   e.stopPropagation();
   showPicker();
-  formCalendar(chosenDay ?? today);
+  formCalendar(chosenDay);
 });
 
 pickerDateContainer.addEventListener("click", (e) => {
@@ -68,19 +80,23 @@ pickerDateContainer.addEventListener("click", (e) => {
     let year;
     let month;
     let date;
-    if (e.target.matches(".picker__date--prev")) {
+    const target = e.target.closest(".picker__date");
+    if (target.matches(".picker__date--prev")) {
       [year, month] = defineMonthAndYear(
         -1,
         months.indexOf(pickerMonthEl.textContent),
-        +pickerYearEl.textContent
+        +pickerYearEl.textContent,
+        months
       );
-    } else if (e.target.matches(".picker__date--next")) {
+    } else if (target.matches(".picker__date--next")) {
       [year, month] = defineMonthAndYear(
         1,
         months.indexOf(pickerMonthEl.textContent),
-        +pickerYearEl.textContent
+        +pickerYearEl.textContent,
+        months
       );
     } else {
+      console.log("something wrong");
       month = months.indexOf(pickerMonthEl.textContent);
       year = +pickerYearEl.textContent;
     }
@@ -91,15 +107,28 @@ pickerDateContainer.addEventListener("click", (e) => {
   }
 });
 
-function defineMonthAndYear(dir, month, year) {
-  if (month === 0) {
-    return dir === -1 ? [year - 1, months.length - 1] : [year, month + 1];
-  }
-  if (month === months.length - 1) {
-    return dir === -1 ? [year, month - 1] : [year + 1, 0];
-  }
-  return [year, month + dir];
-}
+pickerYearArrow.forEach((arrow) => {
+  arrow.addEventListener("click", (e) => {
+    if (chosenDay.getFullYear() === 1970) return;
+    const dir = e.target.matches(".picker__arrow-left") ? -1 : 1;
+    chosenDay.setFullYear(chosenDay.getFullYear() + dir);
+    formCalendar(chosenDay);
+  });
+});
+
+pickerMonthArrow.forEach((arrow) => {
+  arrow.addEventListener("click", (e) => {
+    if (e.target.matches("picker__arrow-left") && chosenDay.getMonth() <= 0) {
+      return;
+    }
+    if (e.target.matches("picker__arrow-right") && chosenDay.getMonth() >= 11) {
+      return;
+    }
+    const dir = e.target.matches(".picker__arrow-left") ? -1 : 1;
+    chosenDay.setMonth(chosenDay.getMonth() + dir);
+    formCalendar(chosenDay);
+  });
+});
 
 document.addEventListener("click", (e) => {
   if (!pickerEl.classList.contains("hidden") && !e.target.closest(".picker")) {
