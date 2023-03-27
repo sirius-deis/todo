@@ -135,6 +135,13 @@ $text-color: whitesmoke;
         &--next {
           color: gray;
         }
+        &--today {
+          border: 1px solid #ffffff;
+        }
+        &--chosen {
+          background-color: orangered;
+          color: #f0f9ff;
+        }
       }
       &__amount {
       }

@@ -5,9 +5,7 @@ const pickerEl = document.querySelector(".picker");
 const pickerYearEl = pickerEl.querySelector(".picker__year .picker__value");
 const pickerMonthEl = pickerEl.querySelector(".picker__month .picker__value");
 const pickerDateContainer = pickerEl.querySelector(".picker__dates");
-const pickerDateEls = pickerDateContainer.querySelectorAll(
-  ".picker__date .picker__date-container"
-);
+const pickerDateEls = pickerDateContainer.querySelectorAll(".picker__date");
 const pickerYearArrow = pickerEl.querySelectorAll(
   ".picker__year .picker__arrow"
 );
@@ -37,7 +35,9 @@ function resetDateEls() {
   for (let i = 0; i < pickerDateEls.length; i++) {
     pickerDateEls[i].classList.remove(
       "picker__date--prev",
-      "picker__date--next"
+      "picker__date--next",
+      "picker__date--today",
+      "picker__date--chosen"
     );
   }
 }
@@ -60,11 +60,25 @@ function formDates(date) {
     lastDayOfPrevMonth
   );
   for (let i = 0; i < pickerDateEls.length; i++) {
-    pickerDateEls[i].textContent = listOfDates[i].data;
+    pickerDateEls[i].closest(".picker__date").textContent = listOfDates[i].data;
+    if (
+      date.getFullYear() === today.getFullYear() &&
+      date.getMonth() === today.getMonth() &&
+      listOfDates[i].data === today.getDate() &&
+      !listOfDates[i].info
+    ) {
+      pickerDateEls[i].classList.add(`picker__date--today`);
+    }
+    if (
+      date.getFullYear() === chosenDay.getFullYear() &&
+      date.getMonth() === chosenDay.getMonth() &&
+      listOfDates[i].data === chosenDay.getDate() &&
+      !listOfDates[i].info
+    ) {
+      pickerDateEls[i].classList.add(`picker__date--chosen`);
+    }
     if (listOfDates[i].info) {
-      pickerDateEls[i]
-        .closest(".picker__date")
-        .classList.add(`picker__date--${listOfDates[i].info}`);
+      pickerDateEls[i].classList.add(`picker__date--${listOfDates[i].info}`);
     }
   }
 }
