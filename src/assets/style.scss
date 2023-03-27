@@ -99,8 +99,6 @@ $text-color: whitesmoke;
         position: relative;
         background-color: #e0f2fe;
       }
-      &__container {
-      }
       &__days {
         display: grid;
         grid-template-columns: repeat(7, 1fr);
@@ -132,6 +130,10 @@ $text-color: whitesmoke;
         span {
           font-size: 2rem;
           text-align: center;
+        }
+        &--prev,
+        &--next {
+          color: gray;
         }
       }
       &__amount {
