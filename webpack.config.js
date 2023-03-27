@@ -23,6 +23,10 @@ module.exports = {
           },
         },
       },
+      {
+        test: /\.s[ac]ss$/i,
+        use: ["style-loader", "css-loader", "sass-loader"],
+      },
     ],
   },
   plugins: [
@@ -35,14 +39,16 @@ module.exports = {
     new CopyWebpackPlugin({
       patterns: [
         {
-          from: path.resolve(__dirname, "src", "assets"),
-          to: "public",
+          from: path.resolve(__dirname, "src", "assets", "icons"),
+          to: "public/icons",
         },
       ],
     }),
   ],
   devServer: {
-    contentBase: path.resolve(__dirname, "dist"),
+    static: {
+      directory: path.join(__dirname, "dist"),
+    },
     hot: true,
     compress: true,
     port: 9191,

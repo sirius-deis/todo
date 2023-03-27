@@ -7,5 +7,96 @@
     <meta name="description" content="Simple todo app" />
     <title>Todo</title>
   </head>
-  <body></body>
+  <body>
+    <main class="container">
+      <div class="header">
+        <span class="header__logo"></span>
+        <h1 class="header__title"></h1>
+      </div>
+      <div class="calendar">
+        <button type="calendar__button">today</button>
+      </div>
+      <form class="add">
+        <input class="add__input" type="text" placeholder="Add new" required />
+        <label class="add__lable"
+          ><input class="add__time" type="time"
+        /></label>
+        <button class="add__btn" type="submit">Add</button>
+      </form>
+      <div class="line"></div>
+      <div class="display">
+        <div class="display__filter">
+          <label class="dissplay__label" for="display__select">Filter</label>
+          <select name="filter" id="display__select">
+            <option value="all">All</option>
+            <option value="completed">Completed</option>
+            <option value="active">Active</option>
+          </select>
+        </div>
+        <div class="display__sort">
+          <label class="dissplay__label" for="display__select">Sort</label>
+          <select name="sort" id="display__select">
+            <option value="name">Name</option>
+            <option value="'time">Time</option>
+          </select>
+        </div>
+        <button class="display__desc">
+          <img
+            src="public/icons/arrow-down-short-wide-solid.svg"
+            height="20"
+            width="20"
+            alt="arrow"
+          />
+        </button>
+      </div>
+      <div class="todos">
+        <ul class="todos__list">
+          <li class="todos__item">
+            <label
+              ><input type="checkbox" name="" class="todos__check"
+            /></label>
+            <div class="todos__text">Lorem ipsum dolor sit!</div>
+            <div class="todos__expiration">
+              <img
+                class="todos__hourglass"
+                src="public/icons/hourglass-half-regular.svg"
+                height="10"
+                width="10"
+                alt="hourglass"
+              />
+              <span class="todos__time"></span>
+            </div>
+            <div class="todos__edit">
+              <div class="todos__top">
+                <img
+                  class="todos__pencil"
+                  src="public/icons/pencil-solid.svg"
+                  height="10"
+                  width="10"
+                  alt="pencil"
+                />
+                <img
+                  class="todos__trash"
+                  src="public/icons/trash-solid.svg"
+                  height="10"
+                  width="10"
+                  alt="trash"
+                />
+              </div>
+              <div class="todos__bottom">
+                <img
+                  class="todos__sign"
+                  src="public/icons/info-solid.svg"
+                  height="10"
+                  width="10"
+                  alt="info"
+                />
+                <span class="time"></span>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </main>
+  </body>
 </html>
