@@ -1,10 +1,11 @@
 import "./assets/style.scss";
-import { getDate } from "./calendar";
+import { getDate, onDateChoose } from "./calendar";
 import { submitForm } from "./addForm";
 import { saveToStorage, retrieveTodoListFromStorage } from "./storage";
-import { addTodoToList } from "./todoList";
+import { addTodoToList, addAllTodoList } from "./todoList";
 
 const addFormEl = document.querySelector(".add");
+const pickerDateContainer = document.querySelector(".picker__dates");
 
 window.addEventListener("DOMContentLoaded", () => {});
 
@@ -27,16 +28,22 @@ const registerServiceWorker = async () => {
   }
 };
 
+function formateDate(date) {
+  return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+}
+
 addFormEl.addEventListener("submit", (e) => {
   e.preventDefault();
   const todo = submitForm(e);
-  console.log(1);
-  addTodoToList(todo);
-  const date = getDate();
-  saveToStorage(
-    todo,
-    `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`
-  );
+  const formattedDate = formateDate(getDate());
+  addTodoToList(formattedDate, todo);
+  saveToStorage(formattedDate, todo);
+});
+
+pickerDateContainer.addEventListener("click", (e) => {
+  const chosenDate = formateDate(onDateChoose(e));
+  const todoList = retrieveTodoListFromStorage(chosenDate);
+  addAllTodoList(chosenDate, todoList);
 });
 
 registerServiceWorker();

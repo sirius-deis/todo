@@ -1,18 +1,25 @@
-export function saveToStorage(todo, date) {
+export function saveToStorage(date, { text, time, done }) {
   const todoList = JSON.parse(localStorage.getItem("todo-list")) ?? {};
   if (!todoList[date]) {
     todoList[date] = {};
   }
-  todoList[date][todo.time] = todo;
+  todoList[date][time] = { text, done };
   localStorage.setItem("todo-list", JSON.stringify(todoList));
 }
 
-export function retrieveTodoListFromStorage(time) {
+export function retrieveTodoListFromStorage(date) {
   const todoList = JSON.parse(localStorage.getItem("todo-list"));
-  return todoList[time];
+  return todoList[date] ?? {};
 }
 
-export function updateTodoListStatus({ time, status }) {
+export function updateTodo(date, { text, time, done }) {
   const todoList = JSON.parse(localStorage.getItem("todo-list"));
-  todoList[time].done = status;
+  todoList[date][time] = { text, done };
+  localStorage.setItem("todo-list", JSON.stringify(todoList));
+}
+
+export function deleteTodo(date, time) {
+  const todoList = JSON.parse(localStorage.getItem("todo-list"));
+  delete todoList[date][time];
+  localStorage.setItem("todo-list", JSON.stringify(todoList));
 }

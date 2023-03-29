@@ -3,7 +3,9 @@ const calendarBtnEl = document.querySelector(".calendar__button"),
   pickerYearEl = pickerEl.querySelector(".picker__year .picker__value"),
   pickerMonthEl = pickerEl.querySelector(".picker__month .picker__value"),
   pickerDateContainer = pickerEl.querySelector(".picker__dates"),
-  pickerDateEls = pickerDateContainer.querySelectorAll(".picker__date"),
+  pickerDateEls = pickerDateContainer.querySelectorAll(
+    ".picker__dates .picker__date"
+  ),
   pickerYearArrow = pickerEl.querySelectorAll(".picker__year .picker__arrow"),
   pickerMonthArrow = pickerEl.querySelectorAll(".picker__month .picker__arrow");
 
@@ -19,7 +21,7 @@ calendarBtnEl.addEventListener("click", (e) => {
   formCalendar(chosenDay ?? today);
 });
 
-pickerDateContainer.addEventListener("click", (e) => {
+export function onDateChoose(e) {
   if (e.target.closest(".picker__date")) {
     let year;
     let month;
@@ -47,8 +49,9 @@ pickerDateContainer.addEventListener("click", (e) => {
     chosenDay = new Date(year, month, date);
     changeBtnName(chosenDay);
     hidePicker();
+    return chosenDay;
   }
-});
+}
 
 pickerYearArrow.forEach((arrow) => {
   arrow.addEventListener("click", (e) => {
@@ -95,7 +98,7 @@ function formDates(date) {
   const dateClone = new Date(date.getFullYear(), date.getMonth(), 1);
   const firstDayOfMonth = dateClone.getDay();
   const amountOfDays = getAmountOfDays(
-    new Date(date.getFullYear(), date.getMonth(), 1)
+    new Date(date.getFullYear(), date.getMonth() + 1, 1)
   );
   const lastDayOfPrevMonth = getLastDayOfPrevMonth(dateClone);
   const listOfDates = formDateList(

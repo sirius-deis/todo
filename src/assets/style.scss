@@ -289,6 +289,7 @@ $text-color: whitesmoke;
       font-size: 2rem;
       padding: 0.5rem;
       width: 100%;
+      max-height: 100%;
       white-space: nowrap;
       overflow: hidden;
       &--done {
@@ -297,6 +298,10 @@ $text-color: whitesmoke;
     }
     &__expiration {
       gap: 2px;
+      display: none;
+    }
+    &__edit {
+      grid-column: 5;
     }
     &__wrapper {
       display: flex;
