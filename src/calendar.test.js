@@ -1,46 +1,59 @@
+import fs from "fs";
+import path from "path";
 import { describe, it, expect } from "vitest";
 
-import { defineMonthAndYear, formDateList } from "./utils";
+const dom = fs.readFileSync(path.resolve(__dirname, "index.html"), {
+  encoding: "utf-8",
+});
+
+global.document.write(dom);
+
+import {
+  defineMonthAndYear,
+  formDateList,
+  getAmountOfDays,
+  getLastDayOfPrevMonth,
+} from "./calendar";
 
 describe("#defineMonthAndYear", () => {
   /* prettier-ignore */
   const months = ["January", "February","March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-  it("return previous month", () => {
+  it("returns previous month", () => {
     const dir = -1;
     const month = 3;
     const year = 2023;
     const result = defineMonthAndYear(dir, month, year, months);
     expect(result).toEqual([2023, 2]);
   });
-  it("return previous month and year if it's january", () => {
+  it("returns previous month and year if it's january", () => {
     const dir = -1;
     const month = 0;
     const year = 2023;
     const result = defineMonthAndYear(dir, month, year, months);
     expect(result).toEqual([2022, months.length - 1]);
   });
-  it("return previous month if it's december", () => {
+  it("returns previous month if it's december", () => {
     const dir = -1;
     const month = 11;
     const year = 2023;
     const result = defineMonthAndYear(dir, month, year, months);
     expect(result).toEqual([2023, 10]);
   });
-  it("return next month", () => {
+  it("returns next month", () => {
     const dir = 1;
     const month = 6;
     const year = 2023;
     const result = defineMonthAndYear(dir, month, year, months);
     expect(result).toEqual([2023, 7]);
   });
-  it("return next month and year if it's december", () => {
+  it("returns next month and year if it's december", () => {
     const dir = 1;
     const month = 11;
     const year = 2023;
     const result = defineMonthAndYear(dir, month, year, months);
     expect(result).toEqual([2024, 0]);
   });
-  it("return next month and year if it's january", () => {
+  it("returns next month and year if it's january", () => {
     const dir = 1;
     const month = 0;
     const year = 2023;
@@ -50,7 +63,7 @@ describe("#defineMonthAndYear", () => {
 });
 
 describe("#formDateList", () => {
-  it("form march", () => {
+  it("return list of march", () => {
     /* prettier-ignore */
     const listOfDate = Array.from(new Array(42), (x, i) => {
       if(i < 2) {
@@ -71,5 +84,19 @@ describe("#formDateList", () => {
       lastDayOfPrevMonth
     );
     expect(result).toEqual(listOfDate);
+  });
+});
+
+describe("#getAmountOfDays", () => {
+  it("returns amount of days in February", () => {
+    const date = new Date(2023, 2, 1);
+    expect(getAmountOfDays(date)).toBe(28);
+  });
+});
+
+describe("#getLastDayOfPrevMonth", () => {
+  it("returns last day in June", () => {
+    const date = new Date(2023, 6, 1);
+    expect(getLastDayOfPrevMonth(date)).toBe(30);
   });
 });

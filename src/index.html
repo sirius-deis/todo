@@ -209,7 +209,7 @@
           </div>
         </div>
       </div>
-      <form class="add">
+      <form class="add droppable">
         <div class="add__wrapper">
           <input
             class="add__input"
@@ -217,8 +217,8 @@
             placeholder="Add new"
             required
           />
-          <label class="add__label"
-            ><input class="add__time" type="time"
+          <label class="add__label" for="time"
+            ><input class="add__time" type="time" id="time"
           /></label>
           <button class="add__btn" type="submit">Add</button>
         </div>
@@ -249,59 +249,61 @@
           />
         </button>
       </div>
-      <div class="todos">
-        <ul class="todos__list">
-          <li class="todos__item">
-            <label class="todos__label"
-              ><input
-                type="checkbox"
-                name="todos__check"
-                class="todos__check"
-                checked />
-              <span class="todos__checkmark"></span
-            ></label>
-            <div class="todos__text">Lorem ipsum dolor sit!</div>
-            <div class="todos__expiration">
-              <div class="todos__wrapper">
-                <img
-                  class="todos__hourglass"
-                  src="public/icons/hourglass-half-regular.svg"
-                  height="20"
-                  width="20"
-                  alt="hourglass"
-                />
-                <span class="todos__time">24342</span>
+      <div class="todo">
+        <ul class="todo__list">
+          <template class="todo__template">
+            <li class="todo__item">
+              <label class="todo__label"
+                ><input
+                  type="checkbox"
+                  name="todo__check"
+                  class="todo__check"
+                  checked />
+                <span class="todo__checkmark"></span
+              ></label>
+              <div type="text" class="todo__text"></div>
+              <div class="todo__expiration">
+                <div class="todo__wrapper">
+                  <img
+                    class="todo__hourglass"
+                    src="public/icons/hourglass-half-regular.svg"
+                    height="20"
+                    width="20"
+                    alt="hourglass"
+                  />
+                  <span class="todo__time-expiration"></span>
+                </div>
               </div>
-            </div>
-            <div class="todos__edit">
-              <div class="todos__top">
-                <img
-                  class="todos__pencil"
-                  src="public/icons/pencil-solid.svg"
-                  height="16"
-                  width="16"
-                  alt="pencil"
-                />
-                <img
-                  class="todos__trash"
-                  src="public/icons/trash-solid.svg"
-                  height="16"
-                  width="16"
-                  alt="trash"
-                />
+              <div class="todo__edit">
+                <div class="todo__top">
+                  <img
+                    class="todo__pencil"
+                    src="public/icons/pencil-solid.svg"
+                    height="16"
+                    width="16"
+                    alt="pencil"
+                  />
+                  <img
+                    class="todo__trash"
+                    src="public/icons/trash-solid.svg"
+                    height="16"
+                    width="16"
+                    alt="trash"
+                  />
+                </div>
+                <div class="todo__bottom">
+                  <img
+                    class="todo__sign"
+                    src="public/icons/info-solid.svg"
+                    height="14"
+                    width="14"
+                    alt="info"
+                  />
+                  <span class="todo__time"></span>
+                </div>
               </div>
-              <div class="todos__bottom">
-                <img
-                  class="todos__sign"
-                  src="public/icons/info-solid.svg"
-                  height="14"
-                  width="14"
-                  alt="info"
-                />
-                <span class="todos__time">52353</span>
-              </div>
-            </div>
-          </li>
+            </li>
+          </template>
         </ul>
       </div>
     </main>

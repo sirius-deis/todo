@@ -1,5 +1,10 @@
 import "./assets/style.scss";
-import "./calendar";
+import { getDate } from "./calendar";
+import { submitForm } from "./addForm";
+import { saveToStorage, retrieveTodoListFromStorage } from "./storage";
+import { addTodoToList } from "./todoList";
+
+const addFormEl = document.querySelector(".add");
 
 window.addEventListener("DOMContentLoaded", () => {});
 
@@ -21,5 +26,17 @@ const registerServiceWorker = async () => {
     }
   }
 };
+
+addFormEl.addEventListener("submit", (e) => {
+  e.preventDefault();
+  const todo = submitForm(e);
+  console.log(1);
+  addTodoToList(todo);
+  const date = getDate();
+  saveToStorage(
+    todo,
+    `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`
+  );
+});
 
 registerServiceWorker();

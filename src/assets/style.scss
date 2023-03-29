@@ -189,6 +189,9 @@ $text-color: whitesmoke;
       color: $text-color;
       border-radius: 5px;
       cursor: pointer;
+      &:disabled {
+        background-color: rgb(85, 84, 84);
+      }
     }
   }
   .line {
@@ -223,7 +226,7 @@ $text-color: whitesmoke;
       cursor: pointer;
     }
   }
-  .todos {
+  .todo {
     width: 90%;
     margin: 2% auto;
     &__list {
@@ -265,8 +268,6 @@ $text-color: whitesmoke;
       bottom: 0;
       cursor: pointer;
     }
-    .todos__check:checked ~ .todos__checkmark::after {
-    }
     &__checkmark::after {
       content: "";
       position: absolute;
@@ -281,12 +282,18 @@ $text-color: whitesmoke;
       border-left: 0;
       transform: rotate(45deg) translate(-50%, -70%);
     }
-    .todos__check:checked ~ .todos__checkmark::after {
+    .todo__check:checked ~ .todo__checkmark::after {
       display: block;
     }
     &__text {
       font-size: 2rem;
-      width: 70%;
+      padding: 0.5rem;
+      width: 100%;
+      white-space: nowrap;
+      overflow: hidden;
+      &--done {
+        text-decoration: line-through;
+      }
     }
     &__expiration {
       gap: 2px;
@@ -304,7 +311,7 @@ $text-color: whitesmoke;
     &__hourglass {
       fill: rgb(201, 141, 29);
     }
-    &__time {
+    &__time-expiration {
       font-size: 1.5rem;
     }
     &__edit {
