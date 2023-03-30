@@ -294,6 +294,10 @@ $text-color: whitesmoke;
             overflow: hidden;
             border: 0;
             background-color: transparent;
+            &:focus {
+                outline: none;
+                box-shadow: 1px 1px 5px silver;
+            }
             &--done {
                 text-decoration: line-through;
             }

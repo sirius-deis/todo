@@ -146,15 +146,33 @@ class TodoList {
 
     addAllTodoToList = (date, list) => {
         this.#todoListEl.innerHTML = "";
-        this.sortByTime(list).forEach((todo) => {
-            this.addTodoToList(date, { ...todo[1], time: todo[0] });
+        const formattedArray = this.formatToArrayLike(list);
+        this.sortByTime(formattedArray).forEach((todo) => {
+            this.addTodoToList(date, todo);
         });
     };
 
+    formatToArrayLike = (list) => {
+        const arr = [];
+        for (let key of Object.keys(list)) {
+            list[key];
+            arr.push({ text: list[key].text, time: key, done: list[key].done });
+        }
+        return arr;
+    };
+
+    filterCompleted = (list) => {
+        return list.filter((todo) => todo.done);
+    };
+
+    filterActive = (list) => {
+        return list.filter((todo) => !todo.done);
+    };
+
     sortByTime = (list) => {
-        return Object.entries(list).sort((t1, t2) => {
-            const t1splitted = t1[0].split(":");
-            const t2splitted = t2[0].split(":");
+        return list.sort((todo1, todo2) => {
+            const t1splitted = todo1.time.split(":");
+            const t2splitted = todo2.time.split(":");
             if (+t1splitted[0] > +t2splitted[0]) {
                 return 1;
             } else if (+t2splitted[0] > +t1splitted[0]) {
@@ -167,8 +185,21 @@ class TodoList {
         });
     };
 
-    /* TODO: */
-    reverse = (list) => {};
+    sortByTitle = (list) => {
+        return list.sort((todo1, todo2) => {
+            if (todo1.text < todo2.text) {
+                return -1;
+            }
+            if (todo1.text > todo2.text) {
+                return 1;
+            }
+            return 0;
+        });
+    };
+
+    reverse = (list) => {
+        return list.reverse();
+    };
 }
 
 const todoList = new TodoList();
