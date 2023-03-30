@@ -84,7 +84,7 @@ class TodoList {
     };
 
     #onEntryEdit(e) {
-        e.setAttribute("contenteditable", "true");
+        e.readOnly = false;
         e.removeEventListener("blur", this.#removeEditionFromInput);
         e.addEventListener("blur", this.#removeEditionFromInput);
     }
@@ -114,9 +114,9 @@ class TodoList {
     };
 
     #removeEditionFromInput = ({ target: e }) => {
-        e.setAttribute("contenteditable", "false");
+        e.readOnly = true;
         const todo = this.#getData(e);
-        todo.text = e.textContent;
+        todo.text = e.value;
         updateTodo(todo.date, { text: todo.text, time: todo.time, done: todo.done });
     };
 
@@ -131,7 +131,7 @@ class TodoList {
         const uuid = crypto.randomUUID();
         this.#todoArr.push(new Todo(uuid, text, time, done, date));
         todoClone.firstElementChild.dataset.id = uuid;
-        todoClone.querySelector(".todo__text").textContent = text;
+        todoClone.querySelector(".todo__text").value = text;
         todoClone.querySelector(".todo__check").checked = done;
         todoClone.querySelector(".todo__time-expiration").textContent = time;
         todoClone.querySelector(".todo__time").textContent = time;

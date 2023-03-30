@@ -292,6 +292,8 @@ $text-color: whitesmoke;
             max-height: 100%;
             white-space: nowrap;
             overflow: hidden;
+            border: 0;
+            background-color: transparent;
             &--done {
                 text-decoration: line-through;
             }
