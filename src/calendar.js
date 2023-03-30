@@ -1,197 +1,199 @@
-const calendarBtnEl = document.querySelector(".calendar__button"),
-  pickerEl = document.querySelector(".picker"),
-  pickerYearEl = pickerEl.querySelector(".picker__year .picker__value"),
-  pickerMonthEl = pickerEl.querySelector(".picker__month .picker__value"),
-  pickerDateContainer = pickerEl.querySelector(".picker__dates"),
-  pickerDateEls = pickerDateContainer.querySelectorAll(
-    ".picker__dates .picker__date"
-  ),
-  pickerYearArrow = pickerEl.querySelectorAll(".picker__year .picker__arrow"),
-  pickerMonthArrow = pickerEl.querySelectorAll(".picker__month .picker__arrow");
+class Calendar {
+    #pickerEl;
+    #pickerYearEl;
+    #pickerMonthEl;
+    #pickerDateEls;
+    #pickerYearArrow;
+    #pickerMonthArrow;
 
-const today = new Date(),
-  /* prettier-ignore */
-  months = ["January", "February","March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-let chosenDay,
-  chosenMonthAndYear = new Date();
+    /* prettier-ignore */
+    MONTHS = ["January", "February","March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
-calendarBtnEl.addEventListener("click", (e) => {
-  e.stopPropagation();
-  showPicker();
-  formCalendar(chosenDay ?? today);
-});
+    #today;
+    #chosenDay;
+    #chosenMonthAndYear;
 
-export function onDateChoose(e) {
-  if (e.target.closest(".picker__date")) {
-    let year;
-    let month;
-    let date;
-    const target = e.target.closest(".picker__date");
-    if (target.matches(".picker__date--prev")) {
-      [year, month] = defineMonthAndYear(
-        -1,
-        months.indexOf(pickerMonthEl.textContent),
-        +pickerYearEl.textContent,
-        months
-      );
-    } else if (target.matches(".picker__date--next")) {
-      [year, month] = defineMonthAndYear(
-        1,
-        months.indexOf(pickerMonthEl.textContent),
-        +pickerYearEl.textContent,
-        months
-      );
-    } else {
-      month = months.indexOf(pickerMonthEl.textContent);
-      year = +pickerYearEl.textContent;
+    constructor(today) {
+        this.#today = Object.freeze(today);
+        this.#pickerEl = document.querySelector(".picker");
+        this.#pickerYearEl = this.#pickerEl.querySelector(".picker__year .picker__value");
+        this.#pickerMonthEl = this.#pickerEl.querySelector(".picker__month .picker__value");
+        this.#pickerDateEls = this.#pickerEl.querySelectorAll(".picker__dates .picker__date");
+        this.#pickerYearArrow = this.#pickerEl.querySelectorAll(".picker__year .picker__arrow");
+        this.#pickerMonthArrow = this.#pickerEl.querySelectorAll(".picker__month .picker__arrow");
+
+        document.addEventListener("click", (e) => {
+            if (!this.#pickerEl.classList.contains("hidden") && !e.target.closest(".picker")) {
+                this.#hidePicker();
+            }
+        });
+
+        this.#pickerYearArrow.forEach((arrow) => {
+            arrow.addEventListener("click", this.#onYearArrowClick);
+        });
+
+        this.#pickerMonthArrow.forEach((arrow) => {
+            arrow.addEventListener("click", this.#onMonthArrowClick);
+        });
     }
-    date = +e.target.textContent;
-    chosenDay = new Date(year, month, date);
-    changeBtnName(chosenDay);
-    hidePicker();
-    return chosenDay;
-  }
-}
 
-pickerYearArrow.forEach((arrow) => {
-  arrow.addEventListener("click", (e) => {
-    if (chosenMonthAndYear.getFullYear() === 1970) return;
-    const dir = e.target.matches(".picker__arrow-left") ? -1 : 1;
-    chosenMonthAndYear.setFullYear(chosenMonthAndYear.getFullYear() + dir);
-    formCalendar(chosenMonthAndYear);
-  });
-});
+    showPicker = () => {
+        this.#formCalendar(this.#chosenDay ?? this.#today);
+        this.#pickerEl.classList.remove("hidden");
+    };
 
-pickerMonthArrow.forEach((arrow) => {
-  arrow.addEventListener("click", (e) => {
-    const dir = e.target.matches(".picker__arrow-left") ? -1 : 1;
-    chosenMonthAndYear.setMonth(chosenMonthAndYear.getMonth() + dir);
-    formCalendar(chosenMonthAndYear);
-  });
-});
+    #hidePicker = () => {
+        this.#pickerEl.classList.add("hidden");
+    };
 
-document.addEventListener("click", (e) => {
-  if (!pickerEl.classList.contains("hidden") && !e.target.closest(".picker")) {
-    hidePicker();
-  }
-});
+    #onYearArrowClick = (e) => {
+        if (this.#chosenMonthAndYear.getFullYear() === 1970) return;
+        const dir = e.target.matches(".picker__arrow-left") ? -1 : 1;
+        this.#chosenMonthAndYear.setFullYear(this.#chosenMonthAndYear.getFullYear() + dir);
+        this.#formCalendar(this.#chosenMonthAndYear);
+    };
 
-function formCalendar(date) {
-  pickerYearEl.textContent = date.getFullYear();
-  pickerMonthEl.textContent = months[date.getMonth()];
-  formDates(date);
-}
+    #onMonthArrowClick = (e) => {
+        const dir = e.target.matches(".picker__arrow-left") ? -1 : 1;
+        this.#chosenMonthAndYear.setMonth(this.#chosenMonthAndYear.getMonth() + dir);
+        this.#formCalendar(this.#chosenMonthAndYear);
+    };
 
-function resetDateEls() {
-  for (let i = 0; i < pickerDateEls.length; i++) {
-    pickerDateEls[i].classList.remove(
-      "picker__date--prev",
-      "picker__date--next",
-      "picker__date--today",
-      "picker__date--chosen"
-    );
-  }
-}
+    onDateChoose = (e) => {
+        if (!e.target.closest(".picker__date")) return;
+        if (e.target.closest(".picker__date")) {
+            let year, month;
+            const target = e.target.closest(".picker__date");
+            const monthNumber = this.MONTHS.indexOf(this.#pickerMonthEl.textContent);
+            const yearNumber = +this.#pickerYearEl.textContent;
+            if (target.matches(".picker__date--prev")) {
+                [year, month] = this.defineMonthAndYear(-1, monthNumber, yearNumber);
+            }
+            if (target.matches(".picker__date--next")) {
+                [year, month] = this.defineMonthAndYear(1, monthNumber, yearNumber);
+            }
+            const date = +e.target.textContent;
+            this.#chosenDay = new Date(year ?? yearNumber, month ?? monthNumber, date);
+            this.#hidePicker();
+            return this.#chosenDay;
+        }
+    };
 
-function formDates(date) {
-  resetDateEls();
-  const dateClone = new Date(date.getFullYear(), date.getMonth(), 1);
-  const firstDayOfMonth = dateClone.getDay();
-  const amountOfDays = getAmountOfDays(
-    new Date(date.getFullYear(), date.getMonth() + 1, 1)
-  );
-  const lastDayOfPrevMonth = getLastDayOfPrevMonth(dateClone);
-  const listOfDates = formDateList(
-    firstDayOfMonth,
-    amountOfDays,
-    lastDayOfPrevMonth
-  );
-  for (let i = 0; i < pickerDateEls.length; i++) {
-    pickerDateEls[i].closest(".picker__date").textContent = listOfDates[i].data;
-    if (
-      date.getFullYear() === today.getFullYear() &&
-      date.getMonth() === today.getMonth() &&
-      listOfDates[i].data === today.getDate() &&
-      !listOfDates[i].info
-    ) {
-      pickerDateEls[i].classList.add(`picker__date--today`);
+    #formCalendar = (date) => {
+        if (!this.#chosenMonthAndYear) {
+            this.#chosenMonthAndYear = new Date(date);
+        }
+        this.#pickerYearEl.textContent = date.getFullYear();
+        this.#pickerMonthEl.textContent = this.MONTHS[date.getMonth()];
+        this.#formDates(date);
+    };
+
+    #resetDateClassesOnElements = () => {
+        for (let i = 0; i < this.#pickerDateEls.length; i++) {
+            this.#pickerDateEls[i].classList.remove(
+                "picker__date--prev",
+                "picker__date--next",
+                "picker__date--today",
+                "picker__date--chosen"
+            );
+        }
+    };
+
+    #formDates = (date) => {
+        this.#resetDateClassesOnElements();
+        const firstDayOfMonth = new Date(date.getFullYear(), date.getMonth(), 1).getDay();
+        const amountOfDays = this.getAmountOfDays(date);
+        const lastDayOfPrevMonth = this.getLastDayOfPrevMonth(date);
+        const listOfDates = this.formDateList(firstDayOfMonth, amountOfDays, lastDayOfPrevMonth);
+        for (let i = 0; i < this.#pickerDateEls.length; i++) {
+            this.#pickerDateEls[i].closest(".picker__date").textContent = listOfDates[i].data;
+            this.#markIfItIsToday(
+                this.#pickerDateEls[i],
+                date.getFullYear(),
+                date.getMonth(),
+                listOfDates[i].data,
+                !listOfDates[i].info
+            );
+            this.#markIfItIsChosen(
+                this.#pickerDateEls[i],
+                date.getFullYear(),
+                date.getMonth(),
+                listOfDates[i].data,
+                !listOfDates[i].info
+            );
+            this.#markIfItIsNotThisMonth(this.#pickerDateEls[i], listOfDates[i].info);
+        }
+    };
+
+    #markIfItIsToday(el, year, month, day, isThisMonth) {
+        if (
+            year === this.#today.getFullYear() &&
+            month === this.#today.getMonth() &&
+            day === this.#today.getDate() &&
+            isThisMonth
+        ) {
+            el.classList.add(`picker__date--today`);
+        }
     }
-    if (
-      date.getFullYear() === chosenDay?.getFullYear() &&
-      date.getMonth() === chosenDay?.getMonth() &&
-      listOfDates[i].data === chosenDay?.getDate() &&
-      !listOfDates[i].info
-    ) {
-      pickerDateEls[i].classList.add(`picker__date--chosen`);
+
+    #markIfItIsChosen(el, year, month, day, isThisMonth) {
+        if (
+            year === this.#chosenDay?.getFullYear() &&
+            month === this.#chosenDay?.getMonth() &&
+            day === this.#chosenDay?.getDate() &&
+            isThisMonth
+        ) {
+            el.classList.add(`picker__date--chosen`);
+        }
     }
-    if (listOfDates[i].info) {
-      pickerDateEls[i].classList.add(`picker__date--${listOfDates[i].info}`);
+
+    #markIfItIsNotThisMonth(el, info) {
+        el.classList.add(`picker__date--${info}`);
     }
-  }
-}
 
-function changeBtnName(date) {
-  calendarBtnEl.textContent = `${date.getDate()} ${
-    months[date.getMonth()]
-  } ${date.getFullYear()}`;
-}
+    getAmountOfDays = (date) => {
+        return new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
+    };
 
-function showPicker() {
-  pickerEl.classList.remove("hidden");
-}
+    getLastDayOfPrevMonth = (date) => {
+        return new Date(date.getFullYear(), date.getMonth(), 0).getDate();
+    };
 
-function hidePicker() {
-  pickerEl.classList.add("hidden");
-}
+    defineMonthAndYear = (dir, month, year) => {
+        if (month === 0) {
+            return dir === -1 ? [year - 1, this.MONTHS.length - 1] : [year, month + 1];
+        }
+        if (month === this.MONTHS.length - 1) {
+            return dir === -1 ? [year, month - 1] : [year + 1, 0];
+        }
+        return [year, month + dir];
+    };
 
-export function getAmountOfDays(date) {
-  const amountOfDays = new Date(date.setDate(date.getDate() - 1)).getDate();
-  return amountOfDays;
-}
+    formDateList = (firstDayOfMonth, amountOfDays, lastDayOfPrevMonth) => {
+        const listOfDates = [];
+        for (let i = 0; i < 42; i++) {
+            if (i < firstDayOfMonth) {
+                listOfDates.push({
+                    data: lastDayOfPrevMonth - firstDayOfMonth + i + 1,
+                    info: "prev",
+                });
+            } else if (i < amountOfDays + firstDayOfMonth) {
+                listOfDates.push({ data: i - firstDayOfMonth + 1 });
+            } else {
+                listOfDates.push({
+                    data: i - amountOfDays - firstDayOfMonth + 1,
+                    info: "next",
+                });
+            }
+        }
+        return listOfDates;
+    };
 
-export function getLastDayOfPrevMonth(date) {
-  const lastDayOfPrevMonth = new Date(
-    date.setDate(date.getDate() - 1)
-  ).getDate();
-  return lastDayOfPrevMonth;
-}
-
-export function defineMonthAndYear(dir, month, year, months) {
-  if (month === 0) {
-    return dir === -1 ? [year - 1, months.length - 1] : [year, month + 1];
-  }
-  if (month === months.length - 1) {
-    return dir === -1 ? [year, month - 1] : [year + 1, 0];
-  }
-  return [year, month + dir];
-}
-
-export function formDateList(
-  firstDayOfMonth,
-  amountOfDays,
-  lastDayOfPrevMonth
-) {
-  const listOfDates = [];
-  for (let i = 0; i < 42; i++) {
-    if (i < firstDayOfMonth) {
-      listOfDates.push({
-        data: lastDayOfPrevMonth - firstDayOfMonth + i + 1,
-        info: "prev",
-      });
-    } else if (i < amountOfDays + firstDayOfMonth) {
-      listOfDates.push({ data: i - firstDayOfMonth + 1 });
-    } else {
-      listOfDates.push({
-        data: i - amountOfDays - firstDayOfMonth + 1,
-        info: "next",
-      });
+    get date() {
+        return this.#chosenDay ?? this.#today;
     }
-  }
-  return listOfDates;
 }
 
-export function getDate() {
-  return chosenDay ?? today;
-}
+const calendar = new Calendar(new Date());
 
-changeBtnName(today);
+export { calendar };
