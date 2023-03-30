@@ -2,9 +2,8 @@ import "./assets/style.scss";
 import calendar from "./calendar";
 import addForm from "./addForm";
 import { saveToStorage, retrieveTodoListFromStorage } from "./storage";
-import { addTodoToList, addAllTodoList } from "./todoList";
+import todoList from "./todoList";
 
-const addFormEl = document.querySelector(".add");
 const calendarBtnEl = document.querySelector(".calendar__button");
 const pickerDateContainer = document.querySelector(".picker__dates");
 
@@ -37,7 +36,7 @@ addForm.addFormEl.addEventListener("submit", (e) => {
     e.preventDefault();
     const todo = addForm.submitForm(e);
     const formattedDate = formateDate(calendar.date);
-    addTodoToList(formattedDate, todo);
+    todoList.addTodoToList(formattedDate, todo);
     saveToStorage(formattedDate, todo);
 });
 
@@ -57,11 +56,17 @@ calendarBtnEl.addEventListener("click", (e) => {
     calendar.showPicker();
 });
 
+function getTodoFromStorageAndPushItToTodoList(date) {
+    const todoListRetrieved = retrieveTodoListFromStorage(date);
+    todoList.addAllTodoToList(date, todoListRetrieved);
+}
+
 pickerDateContainer.addEventListener("click", (e) => {
     const chosenDate = formateDate(calendar.onDateChoose(e));
     changeBtnName(calendar.date);
-    const todoList = retrieveTodoListFromStorage(chosenDate);
-    addAllTodoList(chosenDate, todoList);
+    getTodoFromStorageAndPushItToTodoList(chosenDate);
 });
+
+getTodoFromStorageAndPushItToTodoList(formateDate(calendar.date));
 
 registerServiceWorker();
