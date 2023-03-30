@@ -205,4 +205,4 @@ class Calendar {
 
 const calendar = new Calendar(new Date());
 
-export { calendar };
+export default calendar;

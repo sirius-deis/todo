@@ -1,6 +1,6 @@
 import "./assets/style.scss";
-import { calendar } from "./calendar";
-import { submitForm } from "./addForm";
+import calendar from "./calendar";
+import addForm from "./addForm";
 import { saveToStorage, retrieveTodoListFromStorage } from "./storage";
 import { addTodoToList, addAllTodoList } from "./todoList";
 
@@ -33,10 +33,10 @@ export function formateDate(date) {
     return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
 }
 
-addFormEl.addEventListener("submit", (e) => {
+addForm.addFormEl.addEventListener("submit", (e) => {
     e.preventDefault();
-    const todo = submitForm(e);
-    const formattedDate = formateDate(getDate());
+    const todo = addForm.submitForm(e);
+    const formattedDate = formateDate(calendar.date);
     addTodoToList(formattedDate, todo);
     saveToStorage(formattedDate, todo);
 });
