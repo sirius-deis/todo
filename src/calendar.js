@@ -46,16 +46,23 @@ class Calendar {
         this.#pickerEl.classList.add("hidden");
     };
 
+    #EARLIEST_POSSIBLE_YEAR = 1970;
+    #LEFT_DIRECTION = -1;
+    #RIGHT_DIRECTION = 1;
     #onYearArrowClick = (e) => {
-        if (this.#chosenMonthAndYear.getFullYear() === 1970) return;
-        const dir = e.target.matches(".picker__arrow-left") ? -1 : 1;
-        this.#chosenMonthAndYear.setFullYear(this.#chosenMonthAndYear.getFullYear() + dir);
+        if (this.#chosenMonthAndYear.getFullYear() === this.#EARLIEST_POSSIBLE_YEAR) return;
+        const directionOfMovement = e.target.matches(".picker__arrow-left")
+            ? this.#LEFT_DIRECTION
+            : this.#RIGHT_DIRECTION;
+        this.#chosenMonthAndYear.setFullYear(this.#chosenMonthAndYear.getFullYear() + directionOfMovement);
         this.#formCalendar(this.#chosenMonthAndYear);
     };
 
     #onMonthArrowClick = (e) => {
-        const dir = e.target.matches(".picker__arrow-left") ? -1 : 1;
-        this.#chosenMonthAndYear.setMonth(this.#chosenMonthAndYear.getMonth() + dir);
+        const directionOfMovement = e.target.matches(".picker__arrow-left")
+            ? this.#LEFT_DIRECTION
+            : this.#RIGHT_DIRECTION;
+        this.#chosenMonthAndYear.setMonth(this.#chosenMonthAndYear.getMonth() + directionOfMovement);
         this.#formCalendar(this.#chosenMonthAndYear);
     };
 
@@ -67,10 +74,10 @@ class Calendar {
             const monthNumber = this.MONTHS.indexOf(this.#pickerMonthEl.textContent);
             const yearNumber = +this.#pickerYearEl.textContent;
             if (target.matches(".picker__date--prev")) {
-                [year, month] = this.defineMonthAndYear(-1, monthNumber, yearNumber);
+                [year, month] = this.defineMonthAndYear(this.#LEFT_DIRECTION, monthNumber, yearNumber);
             }
             if (target.matches(".picker__date--next")) {
-                [year, month] = this.defineMonthAndYear(1, monthNumber, yearNumber);
+                [year, month] = this.defineMonthAndYear(this.#RIGHT_DIRECTION, monthNumber, yearNumber);
             }
             const date = +e.target.textContent;
             this.#chosenDay = new Date(year ?? yearNumber, month ?? monthNumber, date);
@@ -159,14 +166,16 @@ class Calendar {
         return new Date(date.getFullYear(), date.getMonth(), 0).getDate();
     };
 
-    defineMonthAndYear = (dir, month, year) => {
+    defineMonthAndYear = (directionOfMovement, month, year) => {
         if (month === 0) {
-            return dir === -1 ? [year - 1, this.MONTHS.length - 1] : [year, month + 1];
+            return directionOfMovement === this.#LEFT_DIRECTION
+                ? [year - 1, this.MONTHS.length - 1]
+                : [year, month + 1];
         }
         if (month === this.MONTHS.length - 1) {
-            return dir === -1 ? [year, month - 1] : [year + 1, 0];
+            return directionOfMovement === this.#LEFT_DIRECTION ? [year, month - 1] : [year + 1, 0];
         }
-        return [year, month + dir];
+        return [year, month + directionOfMovement];
     };
 
     formDateList = (firstDayOfMonth, amountOfDays, lastDayOfPrevMonth) => {
