@@ -8,7 +8,7 @@ const dom = fs.readFileSync(path.resolve(__dirname, "..", "index.html"), {
 
 global.document.write(dom);
 
-import { calendar } from "../calendar";
+import calendar from "../calendar";
 
 describe("#defineMonthAndYear", () => {
     /* prettier-ignore */

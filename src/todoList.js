@@ -158,6 +158,7 @@ class TodoList {
             list[key];
             arr.push({ text: list[key].text, time: key, done: list[key].done });
         }
+        console.log(arr);
         return arr;
     };
 
