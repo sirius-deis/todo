@@ -1,0 +1,21 @@
+{
+    "name": "Todo Application",
+    "short_name": "Todo",
+    "icons": [
+        { "src": "/public/images/android-chrome-192x192.png", "sizes": "192x192", "type": "image/png" },
+        { "src": "/public/images/android-chrome-512x512.png", "sizes": "512x512", "type": "image/png" },
+        {
+            "src": "/public/images/maskable_icon_x192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any maskable"
+        }
+    ],
+    "theme_color": "#f0f9ff",
+    "background_color": "#4e4e4e",
+    "id": "/index.html",
+    "start_url": "/index.html",
+    "display": "standalone",
+    "scope": "/",
+    "description": "Todo app which help you to plan your schedule"
+}

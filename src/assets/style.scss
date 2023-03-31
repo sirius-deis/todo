@@ -1,6 +1,6 @@
 @use "modules/base";
 
-$primary-color: #0284c7;
+$primary-color: #00679b;
 $text-color: whitesmoke;
 
 .container {
@@ -371,9 +371,6 @@ $text-color: whitesmoke;
             height: 10px;
             background-color: #4e5861;
             transform: translateX(-50%) rotate(45deg);
-        }
-        &--hidden {
-            display: none;
         }
     }
 }

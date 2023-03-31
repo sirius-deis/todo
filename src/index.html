@@ -4,7 +4,11 @@
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="theme-color" content="#f0f9ff" />
         <meta name="description" content="Simple todo app" />
+        <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+        <link rel="manifest" href="/manifest.json" />
+        <link rel="apple-touch-icon" href="/public/images/apple-touch-icon.png" />
         <title>Todo</title>
     </head>
     <body>
@@ -169,7 +173,7 @@
             </div>
             <form class="add droppable">
                 <div class="add__wrapper">
-                    <input class="add__input" type="text" placeholder="Add new" required />
+                    <input class="add__input" id="add__input" type="text" placeholder="Add new" required />
                     <label class="add__label" for="time"><input class="add__time" type="time" id="time" /></label>
                     <button class="add__btn" type="submit">Add</button>
                 </div>
@@ -204,7 +208,7 @@
                                 <span class="todo__checkmark"></span
                             ></label>
                             <input type="text" class="todo__text" readonly />
-                            <div class="todo__expiration todo__expiration--hidden">
+                            <div class="todo__expiration hidden">
                                 <div class="todo__wrapper">
                                     <img
                                         class="todo__hourglass"
@@ -248,7 +252,7 @@
                     </template>
                 </ul>
             </section>
-            <aside class="tooltip tooltip--hidden">Some text</aside>
+            <aside class="tooltip hidden">Some text</aside>
         </main>
     </body>
 </html>

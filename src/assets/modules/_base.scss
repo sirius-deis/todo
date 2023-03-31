@@ -1,15 +1,19 @@
 *,
 *::after,
 *::before {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
 :root {
-  font-size: 62.5%;
+    font-size: 62.5%;
+}
+
+body {
+    background-color: rgb(78, 78, 78);
 }
 
 .hidden {
-  display: none;
+    display: none;
 }

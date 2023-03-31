@@ -9,7 +9,7 @@ export default class Tooltip {
     show = (e) => {
         const rect = e.getBoundingClientRect();
         this.#tooltipEl.textContent = this.#text;
-        this.#tooltipEl.classList.remove("tooltip--hidden");
+        this.#tooltipEl.classList.remove("hidden");
         const computedStyles = getComputedStyle(this.#tooltipEl);
         this.#position("top", rect.top + document.documentElement.scrollTop - computedStyles.height.slice(0, -2) / 2);
         this.#position("left", rect.left - computedStyles.width.slice(0, -2) / 2);
@@ -20,7 +20,7 @@ export default class Tooltip {
     }
 
     hide = () => {
-        this.#tooltipEl.classList.add("tooltip--hidden");
+        this.#tooltipEl.classList.add("hidden");
     };
     set text(data) {
         this.#text = data;

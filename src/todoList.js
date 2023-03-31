@@ -139,7 +139,7 @@ class TodoList {
         dateSplitted[1] = dateSplitted[1] - 1;
         const timeSplitted = time.split(":");
         if (new Date(...dateSplitted, ...timeSplitted) <= Date.parse(this.#now) + 1000 * 60 * 60 * 4) {
-            todoClone.querySelector(".todo__expiration").classList.remove("todo__expiration--hidden");
+            todoClone.querySelector(".todo__expiration").classList.remove("hidden");
         }
         this.#todoListEl.append(todoClone);
     }
@@ -158,7 +158,6 @@ class TodoList {
             list[key];
             arr.push({ text: list[key].text, time: key, done: list[key].done });
         }
-        console.log(arr);
         return arr;
     };
 
