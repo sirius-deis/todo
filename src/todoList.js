@@ -62,7 +62,7 @@ class TodoList {
 
     #onClick = (e) => {
         const target = e.target;
-        if (target.matches(".todo__checkmark")) {
+        if (target.matches(".todo__check")) {
             this.#onCheckMarkClick(target);
         }
         if (target.matches(".todo__pencil")) {
@@ -75,10 +75,15 @@ class TodoList {
     };
 
     #onCheckMarkClick = (e) => {
-        const checkMark = e.previousElementSibling;
-        e.parentElement.nextElementSibling.classList.toggle("todo__text--done");
+        const checkMark = e;
+        const textEl = e.parentElement.nextElementSibling;
+        if (checkMark.checked) {
+            textEl.classList.add("todo__text--done");
+        } else {
+            textEl.classList.remove("todo__text--done");
+        }
         const todo = this.#getData(e);
-        todo.done = !checkMark.checked;
+        todo.done = checkMark.checked;
         updateTodo(todo.date, { text: todo.text, time: todo.time, done: todo.done });
     };
 
@@ -129,11 +134,10 @@ class TodoList {
         return todo;
     };
 
-    addTodoToList(date, { text, time, done }) {
+    #createTodo(date, { text, time, done }) {
         const uuid = crypto.randomUUID();
         const todo = new Todo(uuid, text, time, done, date);
         this.#todoArr.push(todo);
-        this.#formTodoEl(uuid, done, text, time, date);
     }
 
     #cleanTodoListElement() {
@@ -143,7 +147,11 @@ class TodoList {
     #formTodoEl(id, done, text, time, date) {
         const todoClone = this.#todoTemplate.content.cloneNode(true);
         todoClone.firstElementChild.dataset.id = id;
-        todoClone.querySelector(".todo__text").value = text;
+        const textEl = todoClone.querySelector(".todo__text");
+        textEl.value = text;
+        if (done) {
+            textEl.classList.add("todo__text--done");
+        }
         todoClone.querySelector(".todo__check").checked = done;
         todoClone.querySelector(".todo__time-expiration").textContent = time;
         todoClone.querySelector(".todo__time").textContent = time;
@@ -157,23 +165,49 @@ class TodoList {
     }
 
     addAllTodoToList = (date, list) => {
-        this.#cleanTodoListElement();
+        if (this.#todoArr[0]?.date !== date) {
+            this.#todoArr = [];
+        }
         const formattedArray = this.formatToArrayLike(list);
-        this.sortByTime(formattedArray).forEach((todo) => {
-            this.addTodoToList(date, todo);
+        formattedArray.forEach((todo) => {
+            this.#createTodo(date, todo);
         });
+
+        this.#changeTodoListDisplay();
     };
 
-    #changeTodoListDisplay() {}
+    #changeTodoListDisplay() {
+        this.#cleanTodoListElement();
+        if (this.#display.filter === "completed") {
+            this.#displayedTodoArr = this.filterCompleted(this.#todoArr);
+        } else if (this.#display.filter === "active") {
+            this.#displayedTodoArr = this.filterActive(this.#todoArr);
+        } else {
+            this.#displayedTodoArr = [...this.#todoArr];
+        }
+
+        if (this.#display.sort === "title") {
+            this.#displayedTodoArr = this.sortByTitle(this.#displayedTodoArr);
+        } else {
+            this.#displayedTodoArr = this.sortByTime(this.#displayedTodoArr);
+        }
+        if (this.#display.order === "desc") {
+            this.#displayedTodoArr = this.reverse(this.#displayedTodoArr);
+        }
+        for (let i = 0; i < this.#displayedTodoArr.length; i++) {
+            const { id, done, text, time, date } = this.#displayedTodoArr[i];
+            this.#formTodoEl(id, done, text, time, date);
+        }
+    }
 
     setDisplay(option) {
-        this.#display = { ...this.#display, option };
+        this.#display = { ...this.#display, ...option };
+        this.#changeTodoListDisplay();
     }
 
     formatToArrayLike = (list) => {
         const arr = [];
         for (let key of Object.keys(list)) {
-            list[key];
             arr.push({ text: list[key].text, time: key, done: list[key].done });
         }
         return arr;

@@ -4,40 +4,37 @@ import addForm from "./addForm";
 import { saveToStorage, retrieveTodoListFromStorage } from "./storage";
 import todoList from "./todoList";
 import "./display";
+import { formateDate } from "./utils";
 
 const calendarBtnEl = document.querySelector(".calendar__button");
 const pickerDateContainer = document.querySelector(".picker__dates");
 
 window.addEventListener("DOMContentLoaded", () => {});
 
-// const registerServiceWorker = async () => {
-//     if ("serviceWorker" in navigator) {
-//         try {
-//             const registration = await navigator.serviceWorker.register("/sw.js", {
-//                 scope: "/",
-//             });
-//             if (registration.installing) {
-//                 console.log("Service worker installing");
-//             } else if (registration.waiting) {
-//                 console.log("Service worker installed");
-//             } else if (registration.active) {
-//                 console.log("Service worker active");
-//             }
-//         } catch (error) {
-//             console.error(`Registration failed with ${error}`);
-//         }
-//     }
-// };
-
-export function formateDate(date) {
-    return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
-}
+const registerServiceWorker = async () => {
+    if ("serviceWorker" in navigator) {
+        try {
+            const registration = await navigator.serviceWorker.register("/sw.js", {
+                scope: "/",
+            });
+            if (registration.installing) {
+                console.log("Service worker installing");
+            } else if (registration.waiting) {
+                console.log("Service worker installed");
+            } else if (registration.active) {
+                console.log("Service worker active");
+            }
+        } catch (error) {
+            console.error(`Registration failed with ${error}`);
+        }
+    }
+};
 
 addForm.addFormEl.addEventListener("submit", (e) => {
     e.preventDefault();
     const todo = addForm.submitForm(e);
     const formattedDate = formateDate(calendar.date);
-    todoList.addTodoToList(formattedDate, todo);
+    todoList.addAllTodoToList(formattedDate, { [todo.time]: todo });
     saveToStorage(formattedDate, todo);
 });
 
@@ -70,4 +67,4 @@ pickerDateContainer.addEventListener("click", (e) => {
 
 getTodoFromStorageAndPushItToTodoList(formateDate(calendar.date));
 
-registerServiceWorker();
+//registerServiceWorker();

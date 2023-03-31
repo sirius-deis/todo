@@ -1,3 +1,6 @@
+import { getAmountOfTasksInMonth } from "./storage";
+import { formateDate } from "./utils";
+
 class Calendar {
     #pickerEl;
     #pickerYearEl;
@@ -87,12 +90,13 @@ class Calendar {
     };
 
     #formCalendar = (date) => {
+        const amountOfTasks = getAmountOfTasksInMonth(formateDate(date));
         if (!this.#chosenMonthAndYear) {
             this.#chosenMonthAndYear = new Date(date);
         }
         this.#pickerYearEl.textContent = date.getFullYear();
         this.#pickerMonthEl.textContent = this.MONTHS[date.getMonth()];
-        this.#formDates(date);
+        this.#formDates(date, amountOfTasks);
     };
 
     #resetDateClassesOnElements = () => {
@@ -106,7 +110,7 @@ class Calendar {
         }
     };
 
-    #formDates = (date) => {
+    #formDates = (date, amountOfTasks) => {
         this.#resetDateClassesOnElements();
         const firstDayOfMonth = new Date(date.getFullYear(), date.getMonth(), 1).getDay();
         const amountOfDays = this.getAmountOfDays(date);
@@ -114,6 +118,9 @@ class Calendar {
         const listOfDates = this.formDateList(firstDayOfMonth, amountOfDays, lastDayOfPrevMonth);
         for (let i = 0; i < this.#pickerDateEls.length; i++) {
             this.#pickerDateEls[i].closest(".picker__date").textContent = listOfDates[i].data;
+            if (!listOfDates[i].info && listOfDates[i].data in amountOfTasks) {
+                console.log("good");
+            }
             this.#markIfItIsToday(
                 this.#pickerDateEls[i],
                 date.getFullYear(),
