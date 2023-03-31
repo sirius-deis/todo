@@ -8,6 +8,7 @@ class Calendar {
     #pickerDateEls;
     #pickerYearArrow;
     #pickerMonthArrow;
+    #picker__amount;
 
     /* prettier-ignore */
     MONTHS = ["January", "February","March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -117,9 +118,10 @@ class Calendar {
         const lastDayOfPrevMonth = this.getLastDayOfPrevMonth(date);
         const listOfDates = this.formDateList(firstDayOfMonth, amountOfDays, lastDayOfPrevMonth);
         for (let i = 0; i < this.#pickerDateEls.length; i++) {
-            this.#pickerDateEls[i].closest(".picker__date").textContent = listOfDates[i].data;
+            const currentDate = this.#pickerDateEls[i].closest(".picker__date");
+            currentDate.textContent = listOfDates[i].data;
             if (!listOfDates[i].info && listOfDates[i].data in amountOfTasks) {
-                console.log("good");
+                this.#addAmountOfTasks(currentDate, amountOfTasks[listOfDates[i].data]);
             }
             this.#markIfItIsToday(
                 this.#pickerDateEls[i],
@@ -138,6 +140,13 @@ class Calendar {
             this.#markIfItIsNotThisMonth(this.#pickerDateEls[i], listOfDates[i].info);
         }
     };
+
+    #addAmountOfTasks(el, amount) {
+        const pickerAmount = document.createElement("span");
+        pickerAmount.className = "picker__amount";
+        pickerAmount.textContent = amount;
+        el.append(pickerAmount);
+    }
 
     #markIfItIsToday(el, year, month, day, isThisMonth) {
         if (

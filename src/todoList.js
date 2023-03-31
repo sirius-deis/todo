@@ -95,6 +95,8 @@ class TodoList {
         e.readOnly = false;
         e.removeEventListener("blur", this.#removeEditionFromInput);
         e.addEventListener("blur", this.#removeEditionFromInput);
+        e.removeEventListener("keypress", this.#removeEditionFromInputOnKeyPress);
+        e.addEventListener("keypress", this.#removeEditionFromInputOnKeyPress);
     }
 
     #onTrashClicked(e) {
@@ -121,11 +123,22 @@ class TodoList {
         this.#tooltip.hide();
     };
 
-    #removeEditionFromInput = ({ target: e }) => {
-        e.readOnly = true;
-        const todo = this.#getData(e);
-        todo.text = e.value;
+    #removeEditionFromInput = ({ target }) => {
+        if (target.readOnly) return;
+        target.readOnly = true;
+        const todo = this.#getData(target);
+        todo.text = target.value;
         updateTodo(todo.date, { text: todo.text, time: todo.time, done: todo.done });
+    };
+
+    #removeEditionFromInputOnKeyPress = (e) => {
+        e.stopPropagation();
+        if (e.code === "Enter") {
+            e.target.readOnly = true;
+            const todo = this.#getData(e.target);
+            todo.text = e.target.value;
+            updateTodo(todo.date, { text: todo.text, time: todo.time, done: todo.done });
+        }
     };
 
     #getData = (el) => {
@@ -164,7 +177,7 @@ class TodoList {
         this.#todoListEl.append(todoClone);
     }
 
-    addAllTodoToList = (date, list) => {
+    addAllTodoToList = (date, list = {}) => {
         if (this.#todoArr[0]?.date !== date) {
             this.#todoArr = [];
         }

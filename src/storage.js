@@ -1,6 +1,5 @@
 export function saveToStorage(date, { text, time, done }) {
     const todoList = JSON.parse(localStorage.getItem("todo-list")) ?? {};
-    console.log(date);
     if (!todoList[date]) {
         todoList[date] = {};
     }
@@ -9,8 +8,8 @@ export function saveToStorage(date, { text, time, done }) {
 }
 
 export function retrieveTodoListFromStorage(date) {
-    const todoList = JSON.parse(localStorage.getItem("todo-list"));
-    return todoList[date] ?? {};
+    const todoList = JSON.parse(localStorage.getItem("todo-list")) ?? {};
+    return todoList[date];
 }
 
 export function updateTodo(date, { text, time, done }) {
@@ -29,7 +28,7 @@ export function deleteTodo(date, time) {
 }
 
 export function getAmountOfTasksInMonth(date) {
-    const todoList = JSON.parse(localStorage.getItem("todo-list"));
+    const todoList = JSON.parse(localStorage.getItem("todo-list")) ?? {};
     const formattedDate = `${date.slice(0, -3)}`;
     const dateRegExp = new RegExp(`^${formattedDate}-\\d{2}$`);
     const dateArr = {};

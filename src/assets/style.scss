@@ -123,11 +123,12 @@ $text-color: whitesmoke;
                 display: flex;
                 justify-content: center;
                 align-items: center;
+                position: relative;
                 height: 4rem;
                 font-size: 2rem;
                 text-align: center;
                 cursor: pointer;
-                span {
+                & + span {
                     font-size: 2rem;
                     text-align: center;
                 }
@@ -144,6 +145,14 @@ $text-color: whitesmoke;
                 }
             }
             &__amount {
+                position: absolute;
+                min-width: 15px;
+                min-height: 15px;
+                top: 0;
+                right: 3px;
+                background-color: whitesmoke;
+                border-radius: 50%;
+                font-size: 1.2rem;
             }
         }
     }
