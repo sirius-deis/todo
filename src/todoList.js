@@ -44,13 +44,16 @@ class TodoList {
     #todoListEl;
     #todoTemplate;
     #todoArr;
+    #displayedTodoArr;
     #now = new Date();
     #tooltip;
+    #display;
     constructor() {
         this.#todoArr = [];
         this.#todoListEl = document.querySelector(".todo__list");
         this.#todoTemplate = this.#todoListEl.querySelector(".todo__template");
         this.#tooltip = new Tooltip();
+        this.#display = { filter: "all", sort: "title", order: "asc" };
 
         this.#todoListEl.addEventListener("click", this.#onClick);
         this.#todoListEl.addEventListener("dblclick", this.#onDoubleClickAnEntry);
@@ -127,10 +130,19 @@ class TodoList {
     };
 
     addTodoToList(date, { text, time, done }) {
-        const todoClone = this.#todoTemplate.content.cloneNode(true);
         const uuid = crypto.randomUUID();
-        this.#todoArr.push(new Todo(uuid, text, time, done, date));
-        todoClone.firstElementChild.dataset.id = uuid;
+        const todo = new Todo(uuid, text, time, done, date);
+        this.#todoArr.push(todo);
+        this.#formTodoEl(uuid, done, text, time, date);
+    }
+
+    #cleanTodoListElement() {
+        this.#todoListEl.innerHTML = "";
+    }
+
+    #formTodoEl(id, done, text, time, date) {
+        const todoClone = this.#todoTemplate.content.cloneNode(true);
+        todoClone.firstElementChild.dataset.id = id;
         todoClone.querySelector(".todo__text").value = text;
         todoClone.querySelector(".todo__check").checked = done;
         todoClone.querySelector(".todo__time-expiration").textContent = time;
@@ -145,12 +157,18 @@ class TodoList {
     }
 
     addAllTodoToList = (date, list) => {
-        this.#todoListEl.innerHTML = "";
+        this.#cleanTodoListElement();
         const formattedArray = this.formatToArrayLike(list);
         this.sortByTime(formattedArray).forEach((todo) => {
             this.addTodoToList(date, todo);
         });
     };
+
+    #changeTodoListDisplay() {}
+
+    setDisplay(option) {
+        this.#display = { ...this.#display, option };
+    }
 
     formatToArrayLike = (list) => {
         const arr = [];
