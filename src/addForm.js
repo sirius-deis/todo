@@ -18,11 +18,11 @@ class AddForm {
             e.target.firstElementChild.showPicker();
         });
 
-        // [this.#addTxtEl, this.#addTimeEl].forEach((input) => {
-        //     input.addEventListener("input", () => {
-        //         this.#addBtnEl.disabled = this.#checkInputValidity(addTxtEl.value, addTimeEl.value);
-        //     });
-        // });
+        [this.#addTxtEl, this.#addTimeEl].forEach((input) => {
+            input.addEventListener("input", () => {
+                this.#addBtnEl.disabled = this.checkInputValidity(this.#addTxtEl.value, this.#addTimeEl.value);
+            });
+        });
 
         ["drop", "dragleave"].forEach((event) => {
             this.#addFormEl.addEventListener(event, this.#unhighlight);
@@ -60,12 +60,12 @@ class AddForm {
         fileReader.readAsText(file, "utf-8");
     };
 
-    #highlight = (e) => {
+    #highlight = () => {
         this.#addFormEl.classList.add("add--highlight");
         this.#addDrop.classList.remove("hidden");
     };
 
-    #unhighlight = (e) => {
+    #unhighlight = () => {
         this.#addFormEl.classList.remove("add--highlight");
         this.#addDrop.classList.add("hidden");
     };
@@ -84,9 +84,6 @@ class AddForm {
         return todoEntity;
     };
 
-    function;
-
-    //20:00
     #REG = /^[0-9]{2}:[0-9]{2}$/;
     checkInputValidity = (text, time) => {
         if (!text.trim().length < 1 && this.#REG.test(time)) {

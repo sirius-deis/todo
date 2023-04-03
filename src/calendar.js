@@ -8,7 +8,6 @@ class Calendar {
     #pickerDateEls;
     #pickerYearArrow;
     #pickerMonthArrow;
-    #picker__amount;
 
     /* prettier-ignore */
     MONTHS = ["January", "February","March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -72,23 +71,21 @@ class Calendar {
 
     onDateChoose = (e) => {
         if (!e.target.closest(".picker__date")) return;
-        if (e.target.closest(".picker__date")) {
-            let year, month;
-            const target = e.target.closest(".picker__date");
-            const monthNumber = this.MONTHS.indexOf(this.#pickerMonthEl.textContent);
-            const yearNumber = +this.#pickerYearEl.textContent;
-            if (target.matches(".picker__date--prev")) {
-                [year, month] = this.defineMonthAndYear(this.#LEFT_DIRECTION, monthNumber, yearNumber);
-            }
-            if (target.matches(".picker__date--next")) {
-                [year, month] = this.defineMonthAndYear(this.#RIGHT_DIRECTION, monthNumber, yearNumber);
-            }
-            const date = +e.target.firstChild.data;
-            this.#chosenDay = new Date(year ?? yearNumber, month ?? monthNumber, date);
-            this.#chosenMonthAndYear = new Date(this.#chosenDay);
-            this.#hidePicker();
-            return this.#chosenDay;
+        let year, month;
+        const target = e.target.closest(".picker__date");
+        const monthNumber = this.MONTHS.indexOf(this.#pickerMonthEl.textContent);
+        const yearNumber = +this.#pickerYearEl.textContent;
+        if (target.matches(".picker__date--prev")) {
+            [year, month] = this.defineMonthAndYear(this.#LEFT_DIRECTION, monthNumber, yearNumber);
         }
+        if (target.matches(".picker__date--next")) {
+            [year, month] = this.defineMonthAndYear(this.#RIGHT_DIRECTION, monthNumber, yearNumber);
+        }
+        const date = +e.target.firstChild.data;
+        this.#chosenDay = new Date(year ?? yearNumber, month ?? monthNumber, date);
+        this.#chosenMonthAndYear = new Date(this.#chosenDay);
+        this.#hidePicker();
+        return this.#chosenDay;
     };
 
     #formCalendar = (date) => {

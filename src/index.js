@@ -30,13 +30,6 @@ const registerServiceWorker = async () => {
     }
 };
 
-function createTodo(date, todo) {
-    const uuid = crypto.randomUUID();
-    const newTodo = { id: uuid, ...todo };
-    saveToStorage(date, newTodo);
-    return newTodo;
-}
-
 addForm.addFormEl.addEventListener("submit", (e) => {
     e.preventDefault();
     const todo = addForm.submitForm(e);
@@ -48,6 +41,20 @@ addForm.addFormEl.addEventListener("submit", (e) => {
 addForm.addFormEl.addEventListener("drop", (e) => {
     addForm.onDropFile(e, createTodoFromFile);
 });
+
+pickerDateContainer.addEventListener("click", (e) => {
+    const formattedDate = formateDate(calendar.onDateChoose(e));
+    changeBtnName(calendar.date);
+    todoList.clearTodoArr();
+    getTodoFromStorageAndPushItToTodoList(formattedDate);
+});
+
+function createTodo(date, todo) {
+    const uuid = crypto.randomUUID();
+    const newTodo = { id: uuid, ...todo };
+    saveToStorage(date, newTodo);
+    return newTodo;
+}
 
 function createTodoFromFile(todoListFromFile) {
     const todoArr = [];
@@ -84,13 +91,6 @@ function getTodoFromStorageAndPushItToTodoList(date) {
     const todoListRetrieved = retrieveTodoListFromStorage(date);
     todoList.addAllTodoToList(date, todoListRetrieved);
 }
-
-pickerDateContainer.addEventListener("click", (e) => {
-    const chosenDate = formateDate(calendar.onDateChoose(e));
-    changeBtnName(calendar.date);
-    todoList.clearTodoArr();
-    getTodoFromStorageAndPushItToTodoList(chosenDate);
-});
 
 getTodoFromStorageAndPushItToTodoList(formateDate(calendar.date));
 
