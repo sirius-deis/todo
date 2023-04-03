@@ -47,6 +47,7 @@ $text-color: whitesmoke;
         display: flex;
         justify-content: center;
         position: relative;
+        z-index: 10;
         &__button {
             width: 20%;
             padding: 1rem 2rem;
@@ -159,7 +160,12 @@ $text-color: whitesmoke;
     .add {
         display: flex;
         justify-content: center;
-        margin: 2rem 0;
+        padding: 3rem 0;
+        position: relative;
+        &--highlight {
+            background-color: #5a5959;
+            border: 4px dotted rgb(97, 255, 6);
+        }
         &__wrapper {
             display: flex;
             justify-content: center;
@@ -200,6 +206,23 @@ $text-color: whitesmoke;
             cursor: pointer;
             &:disabled {
                 background-color: rgb(85, 84, 84);
+            }
+        }
+        &__drop {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            backdrop-filter: blur(10px);
+            font-size: 3rem;
+            color: whitesmoke;
+            background-color: rgba(78, 88, 97, 0.8);
+            &-content {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100%;
             }
         }
     }
@@ -370,7 +393,7 @@ $text-color: whitesmoke;
         box-shadow: 2px 4px 7px rgba(32, 32, 32, 0.4);
         color: whitesmoke;
         border-radius: 5px;
-        transform: translate(5px, -20px);
+        transform: translateY(-20px);
         &::after {
             content: "";
             position: absolute;

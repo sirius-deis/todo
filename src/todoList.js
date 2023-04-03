@@ -1,5 +1,5 @@
 import { updateTodo, deleteTodo } from "./storage";
-import Tooltip from "./tooltip";
+import tooltip from "./tooltip";
 
 class Todo {
     #id;
@@ -7,8 +7,8 @@ class Todo {
     #time;
     #done;
     #date;
-    constructor(id, text, time, done, date) {
-        this.#id = id;
+    constructor(uuid, text, time, done, date) {
+        this.#id = uuid;
         this.#text = text;
         this.#time = time;
         this.#done = done;
@@ -46,13 +46,11 @@ class TodoList {
     #todoArr;
     #displayedTodoArr;
     #now = new Date();
-    #tooltip;
     #display;
     constructor() {
         this.#todoArr = [];
         this.#todoListEl = document.querySelector(".todo__list");
         this.#todoTemplate = this.#todoListEl.querySelector(".todo__template");
-        this.#tooltip = new Tooltip();
         this.#display = { filter: "all", sort: "title", order: "asc" };
 
         this.#todoListEl.addEventListener("click", this.#onClick);
@@ -84,7 +82,8 @@ class TodoList {
         }
         const todo = this.#getData(e);
         todo.done = checkMark.checked;
-        updateTodo(todo.date, { text: todo.text, time: todo.time, done: todo.done });
+        //#TODO:
+        updateTodo(todo.date, { id: todo.id, text: todo.text, time: todo.time, done: todo.done });
     };
 
     #onDoubleClickAnEntry = (e) => {
@@ -101,45 +100,49 @@ class TodoList {
 
     #onTrashClicked(e) {
         const todo = this.#getData(e);
-        deleteTodo(todo.date, todo.time);
+        deleteTodo(todo.date, todo.time, todo.id);
         const indexOfElementToDelete = this.#todoArr.indexOf(todo);
         this.#todoArr.splice(indexOfElementToDelete, 1);
         e.closest(".todo__item").remove();
     }
     #onMouseEnterInfoSign = (e) => {
         if (e.target.matches(".todo__sign")) {
-            this.#tooltip.text = "Expiration time";
+            tooltip.text = "Expiration time";
         } else if (e.target.matches(".todo__pencil")) {
-            this.#tooltip.text = "Edit entry";
+            tooltip.text = "Edit entry";
         } else if (e.target.matches(".todo__trash")) {
-            this.#tooltip.text = "Delete entry";
+            tooltip.text = "Delete entry";
         } else {
             return;
         }
-        this.#tooltip.show(e.target);
+        tooltip.show(e.target);
         e.target.addEventListener("mouseleave", this.#onMouseLeaveInfoSign);
     };
     #onMouseLeaveInfoSign = (e) => {
-        this.#tooltip.hide();
+        tooltip.hide();
     };
 
     #removeEditionFromInput = ({ target }) => {
         if (target.readOnly) return;
         target.readOnly = true;
-        const todo = this.#getData(target);
-        todo.text = target.value;
-        updateTodo(todo.date, { text: todo.text, time: todo.time, done: todo.done });
+        this.#updateInputTextField(target);
     };
 
     #removeEditionFromInputOnKeyPress = (e) => {
         e.stopPropagation();
         if (e.code === "Enter") {
             e.target.readOnly = true;
-            const todo = this.#getData(e.target);
-            todo.text = e.target.value;
-            updateTodo(todo.date, { text: todo.text, time: todo.time, done: todo.done });
+            this.#updateInputTextField(e.target);
         }
     };
+
+    #updateInputTextField(target) {
+        const todo = this.#getData(target);
+        todo.text = target.value;
+
+        //#TODO:
+        updateTodo(todo.date, { id: todo.id, text: todo.text, time: todo.time, done: todo.done });
+    }
 
     #getData = (el) => {
         const id = el.closest(".todo__item").dataset.id;
@@ -147,9 +150,8 @@ class TodoList {
         return todo;
     };
 
-    #createTodo(date, { text, time, done }) {
-        const uuid = crypto.randomUUID();
-        const todo = new Todo(uuid, text, time, done, date);
+    #createTodo(date, { id, text, time, done }) {
+        const todo = new Todo(id, text, time, done, date);
         this.#todoArr.push(todo);
     }
 
@@ -177,10 +179,12 @@ class TodoList {
         this.#todoListEl.append(todoClone);
     }
 
+    //#TODO: adding to storage with id
     addAllTodoToList = (date, list = {}) => {
         if (this.#todoArr[0]?.date !== date) {
             this.#todoArr = [];
         }
+
         const formattedArray = this.formatToArrayLike(list);
         formattedArray.forEach((todo) => {
             this.#createTodo(date, todo);
@@ -209,6 +213,7 @@ class TodoList {
         }
         for (let i = 0; i < this.#displayedTodoArr.length; i++) {
             const { id, done, text, time, date } = this.#displayedTodoArr[i];
+
             this.#formTodoEl(id, done, text, time, date);
         }
     }
@@ -220,8 +225,10 @@ class TodoList {
 
     formatToArrayLike = (list) => {
         const arr = [];
-        for (let key of Object.keys(list)) {
-            arr.push({ text: list[key].text, time: key, done: list[key].done });
+        for (let [key, values] of Object.entries(list)) {
+            for (let value of values) {
+                arr.push({ id: value.id, text: value.text, time: key, done: value.done });
+            }
         }
         return arr;
     };

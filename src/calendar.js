@@ -120,7 +120,8 @@ class Calendar {
         for (let i = 0; i < this.#pickerDateEls.length; i++) {
             const currentDate = this.#pickerDateEls[i].closest(".picker__date");
             currentDate.textContent = listOfDates[i].data;
-            if (!listOfDates[i].info && listOfDates[i].data in amountOfTasks) {
+            //console.log(listOfDates[i].data.toString(), amountOfTasks);
+            if (!listOfDates[i].info && listOfDates[i].data.toString() in amountOfTasks) {
                 this.#addAmountOfTasks(currentDate, amountOfTasks[listOfDates[i].data]);
             }
             this.#markIfItIsToday(
@@ -142,6 +143,7 @@ class Calendar {
     };
 
     #addAmountOfTasks(el, amount) {
+        console.log(amount);
         const pickerAmount = document.createElement("span");
         pickerAmount.className = "picker__amount";
         pickerAmount.textContent = amount;
