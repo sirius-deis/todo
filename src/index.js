@@ -46,8 +46,23 @@ addForm.addFormEl.addEventListener("submit", (e) => {
 });
 
 addForm.addFormEl.addEventListener("drop", (e) => {
-    addForm.onDropFile(e, todoList.addAllTodoToList.bind(null, formateDate(calendar.date)));
+    addForm.onDropFile(e, createTodoFromFile);
 });
+
+function createTodoFromFile(todoListFromFile) {
+    const todoArr = [];
+    const time = `${calendar.date.getHours()}:${calendar.date.getMinutes()}`;
+    const formattedDate = formateDate(calendar.date);
+    for (let todoText of todoListFromFile) {
+        const todo = createTodo(formattedDate, {
+            text: todoText,
+            time,
+            done: false,
+        });
+        todoArr.push(todo);
+    }
+    todoList.addAllTodoToList(formattedDate, { [time]: todoArr });
+}
 
 const options = {
     day: "numeric",
@@ -67,55 +82,16 @@ calendarBtnEl.addEventListener("click", (e) => {
 
 function getTodoFromStorageAndPushItToTodoList(date) {
     const todoListRetrieved = retrieveTodoListFromStorage(date);
-    //console.log(todoListRetrieved);
     todoList.addAllTodoToList(date, todoListRetrieved);
 }
 
 pickerDateContainer.addEventListener("click", (e) => {
     const chosenDate = formateDate(calendar.onDateChoose(e));
     changeBtnName(calendar.date);
+    todoList.clearTodoArr();
     getTodoFromStorageAndPushItToTodoList(chosenDate);
 });
 
 getTodoFromStorageAndPushItToTodoList(formateDate(calendar.date));
 
 //registerServiceWorker();
-
-/**
- *
- * TODO:
- *
- * {
- *  date: {
- *      time: [
- *          {id, text, time, done},
- *          {id, text, time, done},
- *          {id, text, time, done}
- *      ],
- *      time: [
- *          {id, text, time, done},
- *          {id, text, time, done},
- *          {id, text, time, done}
- *      ],
- *      time: [
- *          {id, text, time, done},
- *          {id, text, time, done},
- *          {id, text, time, done}
- *      ]
- *  }
- * }
- *
- *
- * current
- *
- * {
- * date: {
- *      time: {
- *          id,
- *          text,
- *          time,
- *          done
- *      }
- *  }
- * }
- */

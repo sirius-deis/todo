@@ -52,22 +52,8 @@ class AddForm {
                     tooltip.show(e.target);
                     setTimeout(tooltip.hide, 3000);
                 }
-                const date = new Date();
-                const formattedObj = {};
-                result.split("\n").forEach((e) => {
-                    if (e === "") return;
-                    console.log(e);
-                    console.log(`${date.getHours()}:${date.getMinutes()}`);
-                    if (!formattedObj[`${date.getHours()}:${date.getMinutes()}`]) {
-                        formattedObj[`${date.getHours()}:${date.getMinutes()}`] = [];
-                    }
-                    formattedObj[`${date.getHours()}:${date.getMinutes()}`].push({
-                        text: e,
-                        time: `${date.getHours()}:${date.getMinutes()}`,
-                        done: false,
-                    });
-                });
-                console.log(formattedObj);
+                const splittedArr = result.split("\n");
+                callback(splittedArr.slice(0, splittedArr.length - 1));
             },
             false
         );

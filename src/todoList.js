@@ -148,6 +148,10 @@ class TodoList {
         return todo;
     };
 
+    clearTodoArr = () => {
+        this.#todoArr = [];
+    };
+
     #createTodo(date, { id, text, time, done }) {
         const todo = new Todo(id, text, time, done, date);
         this.#todoArr.push(todo);
@@ -176,8 +180,6 @@ class TodoList {
         }
         this.#todoListEl.append(todoClone);
     }
-
-    //#TODO: adding to storage with id
     addAllTodoToList = (date, list = {}) => {
         if (this.#todoArr[0]?.date !== date) {
             this.#todoArr = [];

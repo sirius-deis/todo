@@ -262,6 +262,8 @@ $text-color: whitesmoke;
     .todo {
         width: 90%;
         margin: 2% auto;
+        max-height: 35rem;
+        overflow-y: scroll;
         &__list {
             display: flex;
             flex-direction: column;
@@ -406,4 +408,24 @@ $text-color: whitesmoke;
             transform: translateX(-50%) rotate(45deg);
         }
     }
+}
+
+/* width */
+::-webkit-scrollbar {
+    width: 0;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #000000;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #000000;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #050505;
 }

@@ -67,8 +67,6 @@ class Calendar {
             ? this.#LEFT_DIRECTION
             : this.#RIGHT_DIRECTION;
         this.#chosenMonthAndYear.setMonth(this.#chosenMonthAndYear.getMonth() + directionOfMovement);
-
-        console.log(this.#chosenMonthAndYear.getFullYear(), this.#chosenMonthAndYear.getMonth());
         this.#formCalendar(this.#chosenMonthAndYear);
     };
 
@@ -79,16 +77,12 @@ class Calendar {
             const target = e.target.closest(".picker__date");
             const monthNumber = this.MONTHS.indexOf(this.#pickerMonthEl.textContent);
             const yearNumber = +this.#pickerYearEl.textContent;
-            console.log(yearNumber, monthNumber);
             if (target.matches(".picker__date--prev")) {
                 [year, month] = this.defineMonthAndYear(this.#LEFT_DIRECTION, monthNumber, yearNumber);
-                //console.log(year, month);
             }
             if (target.matches(".picker__date--next")) {
                 [year, month] = this.defineMonthAndYear(this.#RIGHT_DIRECTION, monthNumber, yearNumber);
-                //console.log(year, month);
             }
-
             const date = +e.target.firstChild.data;
             this.#chosenDay = new Date(year ?? yearNumber, month ?? monthNumber, date);
             this.#chosenMonthAndYear = new Date(this.#chosenDay);
