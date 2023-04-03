@@ -82,8 +82,8 @@ class TodoList {
         }
         const todo = this.#getData(e);
         todo.done = checkMark.checked;
-        //#TODO:
         updateTodo(todo.date, { id: todo.id, text: todo.text, time: todo.time, done: todo.done });
+        this.#changeTodoListDisplay();
     };
 
     #onDoubleClickAnEntry = (e) => {
@@ -139,8 +139,6 @@ class TodoList {
     #updateInputTextField(target) {
         const todo = this.#getData(target);
         todo.text = target.value;
-
-        //#TODO:
         updateTodo(todo.date, { id: todo.id, text: todo.text, time: todo.time, done: todo.done });
     }
 
