@@ -410,6 +410,55 @@ $text-color: whitesmoke;
     }
 }
 
+@media screen and (max-width: 1200px) {
+    .container {
+        max-width: 70%;
+    }
+}
+
+@media screen and (max-width: 980px) {
+    :root {
+        font-size: 56.25%;
+    }
+    .container {
+        max-width: 80%;
+        padding: 2rem;
+    }
+}
+
+@media screen and (max-width: 780px) {
+    :root {
+        font-size: 50%;
+    }
+    .container {
+        max-width: 90%;
+        margin-top: 10%;
+        padding: 1.5rem;
+    }
+}
+
+@media screen and (max-width: 580px) {
+    :root {
+        font-size: 37.5%;
+    }
+    .container {
+        max-width: 90%;
+        margin-top: 20%;
+        padding: 1.5rem;
+    }
+}
+
+@media screen and (max-width: 450px) {
+    :root {
+        font-size: 31.25%;
+    }
+    .container {
+        max-width: 95%;
+        margin-top: 30%;
+        padding: 1.5rem;
+    }
+}
+
 /* width */
 ::-webkit-scrollbar {
     width: 0;
