@@ -7,10 +7,17 @@ import todoList from "../todoList";
 
 describe("#formatToArrayLike", () => {
     it("should consume object and return an array", () => {
-        const data = { "01:35": { text: "123", done: false }, "02:35": { text: "456", done: true } };
+        const data = {
+            "01:35": [
+                { text: "123", done: false },
+                { text: "234", done: true },
+            ],
+            "02:35": [{ text: "456", done: true }],
+        };
         const result = todoList.formatToArrayLike(data);
         const expectedResult = [
             { text: "123", time: "01:35", done: false },
+            { text: "234", time: "01:35", done: true },
             { text: "456", time: "02:35", done: true },
         ];
         expect(result).toEqual(expectedResult);
@@ -52,7 +59,6 @@ describe("#filterActive", () => {
 });
 
 describe("#sortByTime", () => {
-    //TODO:
     it("should return sorted array by time", () => {
         const data = [
             { text: "123", time: "07:30", done: false },
@@ -72,7 +78,6 @@ describe("#sortByTime", () => {
 });
 
 describe("#sortByTitle", () => {
-    //TODO:
     it("should return sorted array by title", () => {
         const data = [
             { text: "Do ...", time: "04:30", done: true },
