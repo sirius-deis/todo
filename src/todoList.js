@@ -66,6 +66,7 @@ class TodoList {
         const indexOfElementToDelete = this.#todoArr.indexOf(todo);
         this.#todoArr.splice(indexOfElementToDelete, 1);
         e.closest(".todo__item").remove();
+        tooltip.hide();
     }
 
     #onMouseEnterInfoSign = (e) => {

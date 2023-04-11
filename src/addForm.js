@@ -25,9 +25,7 @@ class AddForm {
         });
 
         [this.#addTxtEl, this.#addTimeEl].forEach((input) => {
-            input.addEventListener("input", () => {
-                this.#addBtnEl.disabled = this.checkInputValidity(this.#addTxtEl.value, this.#addTimeEl.value);
-            });
+            input.addEventListener("input", this.#changeBtnStatus);
         });
 
         ["drop", "dragleave"].forEach((event) => {
@@ -40,6 +38,12 @@ class AddForm {
             this.#addFormEl.addEventListener(event, this.#preventDefault);
         });
     }
+
+    #changeBtnStatus = () => {
+        input.addEventListener("input", () => {
+            this.#addBtnEl.disabled = this.checkInputValidity(this.#addTxtEl.value, this.#addTimeEl.value);
+        });
+    };
 
     onDropFile = (e, callback) => {
         const file = e.dataTransfer.files[0];
@@ -87,6 +91,7 @@ class AddForm {
             done: false,
         };
         this.#addFormEl.reset();
+        this.#changeBtnStatus();
         return todoEntity;
     };
 
