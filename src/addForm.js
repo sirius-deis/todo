@@ -15,9 +15,12 @@ class AddForm {
 
         this.#addFormEl.querySelector(".add__label").addEventListener("click", (e) => {
             e.preventDefault();
-
+            const label = e.target.firstElementChild;
+            if (!label) {
+                return;
+            }
             if ("showPicker" in HTMLInputElement.prototype) {
-                e.target.firstElementChild.showPicker();
+                label.showPicker();
             }
         });
 

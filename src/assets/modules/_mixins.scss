@@ -1,5 +1,10 @@
 @mixin flex {
     display: flex;
-
     @content;
+}
+
+@mixin hidden {
+    width: 0;
+    height: 0;
+    opacity: 0;
 }

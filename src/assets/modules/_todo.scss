@@ -1,0 +1,132 @@
+.todo {
+    width: 90%;
+    margin: 2% auto;
+    max-height: 35rem;
+    overflow-y: scroll;
+    &__list {
+        @include flex {
+            flex-direction: column;
+            justify-content: center;
+            align-items: start;
+        }
+        list-style-type: none;
+    }
+    &__item {
+        display: grid;
+        grid-template-columns: 1fr 30fr 2fr 2fr;
+        align-items: center;
+        width: 100%;
+        gap: 5px;
+    }
+    &__label {
+        display: block;
+        position: relative;
+        user-select: none;
+        width: 2.5rem;
+        height: 2.5rem;
+        font-size: 2.2rem;
+    }
+    &__check {
+        position: absolute;
+        @include hidden;
+    }
+    &__checkmark {
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        border: 1px solid $primary-color;
+        border-radius: 3px;
+        cursor: pointer;
+    }
+    &__checkmark::after {
+        content: "";
+        display: none;
+        position: absolute;
+        width: 1rem;
+        height: 2rem;
+        top: 50%;
+        left: 50;
+        border: 0.4rem solid $primary-color;
+        background-color: transparent;
+        border-top: 0;
+        border-left: 0;
+        transform: rotate(45deg) translate(-50%, -70%);
+    }
+    .todo__check:checked ~ .todo__checkmark::after {
+        display: block;
+    }
+    &__text {
+        font-size: 2rem;
+        padding: 0.5rem;
+        width: 100%;
+        max-height: 100%;
+        white-space: nowrap;
+        overflow: hidden;
+        border: 0;
+        background-color: transparent;
+        &:focus {
+            outline: none;
+            box-shadow: 1px 1px 5px $bg-gray;
+        }
+        &--done {
+            text-decoration: line-through;
+        }
+    }
+    &__expiration {
+        gap: 2px;
+        &--hidden {
+            display: none;
+        }
+    }
+    &__edit {
+        grid-column: 5;
+    }
+    &__wrapper {
+        @include flex {
+            justify-content: center;
+            align-items: center;
+        }
+        width: 3rem;
+        border: 1px solid $orange-color;
+        border-radius: 2px;
+        box-shadow: 1px 2px 6px $shadow-color;
+        padding: 0.5rem 6rem;
+    }
+    &__hourglass {
+        fill: $orange-color;
+    }
+    &__time-expiration {
+        font-size: 1.5rem;
+    }
+    &__edit {
+        @include flex {
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
+        }
+    }
+    &__top {
+        @include flex {
+            justify-content: center;
+            align-items: center;
+        }
+        gap: 1rem;
+    }
+    &__pencil,
+    &__trash,
+    &__sign {
+        cursor: pointer;
+    }
+    &__bottom {
+        @include flex {
+            justify-content: center;
+            align-items: baseline;
+        }
+    }
+    &__time {
+        font-size: 1.4rem;
+    }
+}

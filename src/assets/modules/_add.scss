@@ -1,0 +1,70 @@
+.add {
+    @include flex {
+        justify-content: center;
+    }
+    padding: 3rem 0;
+    position: relative;
+    &--highlight {
+        background-color: $bg-gray;
+        border: 4px dotted rgb(97, 255, 6);
+    }
+    &__wrapper {
+        @include flex {
+            justify-content: center;
+            align-items: center;
+        }
+        gap: 6px;
+        width: 90%;
+        padding: 0.5rem;
+        background-color: lighten($bg-color, 50%);
+    }
+    &__input {
+        width: 100%;
+        border: 0;
+        padding: 1rem;
+        font-size: 2rem;
+    }
+    &__label {
+        display: block;
+        width: 2.5rem;
+        height: 2.5rem;
+        background-image: url(icons/hourglass-half-regular.svg);
+        background-position: center;
+        background-size: contain;
+        background-repeat: no-repeat;
+        cursor: pointer;
+    }
+    &__time {
+        @include hidden;
+    }
+    &__btn {
+        background-color: $primary-color;
+        font-size: 1.5rem;
+        padding: 1rem;
+        border: 0;
+        color: $text-color;
+        border-radius: 5px;
+        cursor: pointer;
+        &:disabled {
+            background-color: $bg-gray;
+        }
+    }
+    &__drop {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        backdrop-filter: blur(10px);
+        font-size: 3rem;
+        color: $text-color;
+        background-color: darken($shadow-color, 20%);
+        &-content {
+            @include flex {
+                justify-content: center;
+                align-items: center;
+            }
+            height: 100%;
+        }
+    }
+}

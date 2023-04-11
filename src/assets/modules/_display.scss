@@ -1,0 +1,29 @@
+.display {
+    margin: 0 5%;
+    @include flex {
+        align-items: center;
+        justify-content: end;
+    }
+
+    gap: 1rem;
+    &__filter,
+    &__sort {
+        @include flex {
+            align-items: center;
+        }
+        gap: 1rem;
+    }
+    &__label,
+    &__select {
+        font-size: 2rem;
+        color: darken($text-color, 80%);
+    }
+    &__select {
+        cursor: pointer;
+    }
+    &__asc {
+        border: 0;
+        color: transparent;
+        cursor: pointer;
+    }
+}

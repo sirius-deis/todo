@@ -25,9 +25,29 @@
 }
 
 body {
-    background-color: rgb(78, 78, 78);
+    background-color: $bg-gray;
 }
 
 .hidden {
     display: none;
+}
+
+/* width */
+::-webkit-scrollbar {
+    width: 0;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #000000;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #000000;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #050505;
 }
