@@ -8,6 +8,20 @@
 
 :root {
     font-size: 62.5%;
+    @media screen and (max-width: 980px) {
+        font-size: 56.25%;
+    }
+    @media screen and (max-width: 780px) {
+        font-size: 50%;
+    }
+
+    @media screen and (max-width: 580px) {
+        font-size: 37.5%;
+    }
+
+    @media screen and (max-width: 450px) {
+        font-size: 31.25%;
+    }
 }
 
 body {
