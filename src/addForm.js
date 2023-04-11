@@ -20,6 +20,8 @@ class AddForm {
                 return;
             }
             if ("showPicker" in HTMLInputElement.prototype) {
+                const date = new Date(1970, 0, 1, 23, 59, 59);
+                console.log(date);
                 label.showPicker();
             }
         });

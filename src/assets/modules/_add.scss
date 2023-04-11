@@ -1,3 +1,5 @@
+@import "time-picker";
+
 .add {
     @include flex {
         justify-content: center;
@@ -28,6 +30,7 @@
         display: block;
         width: 2.5rem;
         height: 2.5rem;
+        position: relative;
         background-image: url(icons/hourglass-half-regular.svg);
         background-position: center;
         background-size: contain;
