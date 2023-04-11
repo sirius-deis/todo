@@ -34,9 +34,6 @@
         background-repeat: no-repeat;
         cursor: pointer;
     }
-    &__time {
-        @include hidden;
-    }
     &__btn {
         background-color: $primary-color;
         font-size: 1.5rem;

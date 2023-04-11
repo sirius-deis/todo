@@ -5,6 +5,7 @@ class Calendar {
     #pickerEl;
     #pickerYearEl;
     #pickerMonthEl;
+    #pickerDateContainer;
     #pickerDateEls;
     #pickerYearArrow;
     #pickerMonthArrow;
@@ -21,7 +22,8 @@ class Calendar {
         this.#pickerEl = document.querySelector(".picker");
         this.#pickerYearEl = this.#pickerEl.querySelector(".picker__year .picker__value");
         this.#pickerMonthEl = this.#pickerEl.querySelector(".picker__month .picker__value");
-        this.#pickerDateEls = this.#pickerEl.querySelectorAll(".picker__dates .picker__date");
+        this.#pickerDateEls = [];
+        this.#pickerDateContainer = this.#pickerEl.querySelector(".picker__dates");
         this.#pickerYearArrow = this.#pickerEl.querySelectorAll(".picker__year .picker__arrow");
         this.#pickerMonthArrow = this.#pickerEl.querySelectorAll(".picker__month .picker__arrow");
 
@@ -38,7 +40,21 @@ class Calendar {
         this.#pickerMonthArrow.forEach((arrow) => {
             arrow.addEventListener("click", this.#onMonthArrowClick);
         });
+
+        this.#createCalendarOnCreate();
     }
+
+    #createCalendarOnCreate = () => {
+        for (let i = 0; i < 42; i++) {
+            const pickerDate = document.createElement("div");
+            pickerDate.className = "picker__date";
+            const pickerDateContainer = document.createElement("span");
+            pickerDateContainer.className = "picker__date-container";
+            pickerDate.append(pickerDateContainer);
+            this.#pickerDateEls.push(pickerDate);
+        }
+        this.#pickerDateContainer.append(...this.#pickerDateEls);
+    };
 
     showPicker = () => {
         this.#formCalendar(this.#chosenDay ?? this.#today);

@@ -40,9 +40,7 @@ class AddForm {
     }
 
     #changeBtnStatus = () => {
-        input.addEventListener("input", () => {
-            this.#addBtnEl.disabled = this.checkInputValidity(this.#addTxtEl.value, this.#addTimeEl.value);
-        });
+        this.#addBtnEl.disabled = this.checkInputValidity(this.#addTxtEl.value, this.#addTimeEl.value);
     };
 
     onDropFile = (e, callback) => {
