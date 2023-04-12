@@ -77,13 +77,14 @@
     }
     &__expiration {
         gap: 2px;
+        @media screen and (max-width: 580px) {
+            gap: 1px;
+        }
         &--hidden {
             display: none;
         }
     }
-    &__edit {
-        grid-column: 5;
-    }
+
     &__wrapper {
         @include flex {
             justify-content: center;
@@ -94,14 +95,21 @@
         border-radius: 2px;
         box-shadow: 1px 2px 6px $shadow-color;
         padding: 0.5rem 6rem;
+        @media screen and (max-width: 560px) {
+            padding: 0.1rem 3.7rem;
+        }
     }
     &__hourglass {
         fill: $orange-color;
+        @media screen and (max-width: 580px) {
+            transform: scale(0.5);
+        }
     }
     &__time-expiration {
         font-size: 1.5rem;
     }
     &__edit {
+        grid-column: 5;
         @include flex {
             flex-direction: column;
             justify-content: flex-end;
@@ -119,14 +127,18 @@
     &__trash,
     &__sign {
         cursor: pointer;
+        @media screen and (max-width: 580px) {
+            transform: scale(0.7);
+        }
     }
     &__bottom {
         @include flex {
             justify-content: center;
-            align-items: baseline;
+            align-items: center;
         }
     }
     &__time {
         font-size: 1.4rem;
+        transform: translateY(2px);
     }
 }

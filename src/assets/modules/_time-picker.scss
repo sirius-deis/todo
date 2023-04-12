@@ -13,6 +13,7 @@
     overflow-y: hidden;
     border-radius: 5px;
     transform: translateX(-40%);
+    z-index: 20;
     &:focus {
         outline: none;
     }

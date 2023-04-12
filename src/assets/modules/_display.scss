@@ -17,6 +17,12 @@
     &__select {
         font-size: 2rem;
         color: darken($text-color, 80%);
+        @media screen and (max-width: 580px) {
+            font-size: 1.5rem;
+        }
+        option {
+            padding: 5px 0;
+        }
     }
     &__select {
         cursor: pointer;
@@ -25,5 +31,8 @@
         border: 0;
         color: transparent;
         cursor: pointer;
+        @media screen and (max-width: 580px) {
+            transform: scale(0.7);
+        }
     }
 }

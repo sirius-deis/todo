@@ -12,6 +12,12 @@
         border: 0;
         background-color: lighten($primary-color, 50%);
         cursor: pointer;
+        @media screen and (max-width: 620px) {
+            font-size: 1.2rem;
+        }
+        @media screen and (max-width: 370px) {
+            font-size: 1rem;
+        }
     }
     .picker {
         position: absolute;
@@ -113,6 +119,18 @@
             color: $red-color;
             border-radius: 50%;
             font-size: 1.2rem;
+            @media screen and (max-width: 980px) {
+                min-width: 12px;
+                min-height: 12px;
+            }
+            @media screen and (max-width: 580px) {
+                min-width: 8px;
+                min-height: 8px;
+            }
+            @media screen and (max-width: 450px) {
+                min-width: 6px;
+                min-height: 6px;
+            }
         }
     }
 }

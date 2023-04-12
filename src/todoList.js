@@ -140,7 +140,8 @@ class TodoList {
         const dateSplitted = date.split("-");
         dateSplitted[1] = dateSplitted[1] - 1;
         const timeSplitted = time.split(":");
-        if (new Date(...dateSplitted, ...timeSplitted) <= Date.parse(this.#now) + 1000 * 60 * 60 * 4) {
+        const tempDate = new Date(...dateSplitted, ...timeSplitted);
+        if (tempDate <= Date.parse(this.#now) + 1000 * 60 * 60 * 4 && this.#now.getDate() === tempDate.getDate()) {
             todoClone.querySelector(".todo__expiration").classList.remove("hidden");
         }
         this.#todoListEl.append(todoClone);
