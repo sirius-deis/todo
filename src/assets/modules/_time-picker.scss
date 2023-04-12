@@ -1,32 +1,41 @@
 .time-picker {
     @include flex {
         justify-content: center;
-        align-items: center;
+        align-items: flex-start;
     }
     position: absolute;
-    top: 50px;
+    top: -2rem;
     left: 0;
-    max-height: 27rem;
-    padding: 0.5rem;
+    max-height: 31rem;
     background-color: lighten($bg-color, 50%);
     color: darken($text-color, 90%);
     box-shadow: 2px 3px 7px $shadow-color;
-    font-size: 2rem;
     overflow-y: hidden;
+    border-radius: 5px;
+    transform: translateX(-40%);
+    &:focus {
+        outline: none;
+    }
     &__hours,
     &__minutes {
+        height: 100%;
+        min-width: 6rem;
+        padding: 0.3rem;
     }
     &__hour,
     &__minute {
         padding: 1rem 2rem;
+        font-size: 2rem;
+        border-radius: 2px;
     }
     &__hour.active,
     &__minute.active {
-        outline: 1px solid $bg-gray;
+        outline: 1px solid darken($bg-gray, 70%);
+        background-color: $primary-color;
+        color: $text-color;
     }
-    &__hour:hover,
-    &__minute:hover {
+    &__hour:not(.active):hover,
+    &__minute:not(.active):hover {
         background-color: lighten($primary-color, 40%);
-        border-radius: 2px;
     }
 }

@@ -1,3 +1,4 @@
+import timePicker from "./timePicker";
 import tooltip from "./tooltip";
 
 class AddForm {
@@ -14,20 +15,17 @@ class AddForm {
         this.#addDrop = this.#addFormEl.querySelector(".add__drop");
 
         this.#addFormEl.querySelector(".add__label").addEventListener("click", (e) => {
-            e.preventDefault();
-            const label = e.target.firstElementChild;
-            if (!label) {
+            if (!e.target) {
                 return;
             }
-            if ("showPicker" in HTMLInputElement.prototype) {
-                const date = new Date(1970, 0, 1, 23, 59, 59);
-                console.log(date);
-                label.showPicker();
-            }
+            timePicker.show();
+            timePicker.picker.focus();
         });
 
-        [this.#addTxtEl, this.#addTimeEl].forEach((input) => {
-            input.addEventListener("input", this.#changeBtnStatus);
+        this.#addTxtEl.addEventListener("input", this.#changeBtnStatus);
+        timePicker.picker.addEventListener("blur", () => {
+            timePicker.hide();
+            this.#changeBtnStatus();
         });
 
         ["drop", "dragleave"].forEach((event) => {
@@ -42,7 +40,7 @@ class AddForm {
     }
 
     #changeBtnStatus = () => {
-        this.#addBtnEl.disabled = this.checkInputValidity(this.#addTxtEl.value, this.#addTimeEl.value);
+        this.#addBtnEl.disabled = this.checkInputValidity(this.#addTxtEl.value, timePicker.time);
     };
 
     onDropFile = (e, callback) => {
@@ -87,7 +85,7 @@ class AddForm {
     submitForm = (e) => {
         const todoEntity = {
             text: this.#addTxtEl.value,
-            time: this.#addTimeEl.value,
+            time: timePicker.time,
             done: false,
         };
         this.#addFormEl.reset();
